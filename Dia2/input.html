@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>formulario</title>
+
+    <style>
+        table{
+            margin: auto;
+            border: 2px solid black;
+        }
+    </style>
+
+</head>
+<body>
+
+    <table>
+        <form action="index.html" method="get">
+            <tr>
+                <td>
+                    <label for="email">
+                        digite seu email para realizar o login
+                    </label>
+                    </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input 
+                        type="email"
+                        placeholder="digite seu email" 
+                        id="email"
+                        required
+                    >
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="senha">
+                        Digite sua senha
+                    </label>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <input 
+                        type="password" 
+                        id="senha"
+                        placeholder="digite sua senha"
+                        required
+                    >
+                </td>
+            </tr>
+
+            <tr>
+                <td>    
+                    <label for="ocupacao">
+                        Selecione o seu genero
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input 
+                    type="radio" 
+                    name="genero"
+                    value="Masculino"
+                    > Masculino
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input 
+                    type="radio" 
+                    name="genero"
+                    value="Feminino"
+                    > Feminino
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <button type="submit"> Entrar </button>
+                </td>
+            </tr>
+
+        </form>
+
+    </table>
+
+</body>
+</html>
