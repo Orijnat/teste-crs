@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #121214;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-container {
+            min-height: 100vh;
+        }
+
+        .brand-side {
+            background: url('/Dia3/image.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-login {
+            background-color: #202024;
+            border: none;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-label {
+            color: #e1e1e6;
+            font-weight: 500;
+        }
+
+        .form-control {
+            background-color: #121214;
+            border: 1px solid #323238;
+            color: white;
+            padding: 0.8rem;
+        }
+
+        .form-control:focus {
+            background-color: #121214;
+            border-color: #8257e5;
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(130, 87, 229, 0.25);
+        }
+
+        .btn-purple {
+            background-color: #8257e5;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .btn-purple:hover {
+            background-color: #9466ff;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .brand-side { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container-fluid">
+
+        <div class="row login-container">
+
+            <div class="col-md-8 brand-side d-none d-md-flex">
+            </div>
+
+            <div class="col-md-4 d-flex align-items-center justify-content-center">  
+
+                <div class="card-login shadow-lg">
+                        <h3 class="mb-4 text-center">Acesse sua conta</h3>
+                    
+                    <form>
+
+
+                        <div class="d-flex justify-content-between align-items-center mt-3" style="margin-left: 2vh; margin-right: 2vh;">
+
+                            <button type="button" class="btn btn-outline-secondary border-0" style="background-color: #2B2B3B;"> <img src="/Dia3/icons8-google-60.svg" alt=""> Google </button>
+                            
+                            <button type="button" class="btn btn-outline-secondary border-0" style="background-color: #2B2B3B;"> <img src="/Dia3/icons8-github(1).svg" alt=""> Github </button>
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="mb-3">
+                            <label for="staticEmail" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="staticEmail" placeholder="exemplo@email.com">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="inputPassword" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Sua senha">
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-purple">Entrar</button>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <small style="color: #a8a8b3;">Esqueceu sua senha?</small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    </main>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
