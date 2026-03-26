@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () =>{
     const tabela= document.getElementById('tabela')
     const form= document.getElementById('formulario')
-    const teste= document.getElementById('TESTE')
+    const teste= document.getElementById('teste')
     const dados = [];
 
 
@@ -14,14 +14,19 @@ document.addEventListener('DOMContentLoaded', () =>{
     <td>${prioridade}</td>
     <td>${data}</td>
     <td>
-        <button id="concluido" type="button" class="btn btn-success" onclick= "" >Marcar como concluido </button>
-        <button id="excluir" type="button" class="btn btn-danger" onclick= "" data-index="${i}"> Excluir </button>
+        <button type="button" class="btn btn-success btn-concluido" data-index="${i}">Marcar como concluido </button>
+        <button type="button" class="btn btn-danger btn-excluir" data-index="${i}"> Excluir </button>
     </td>
     `;
     tabela.appendChild(tr);
     
     }
 
+    teste.addEventListener('click', () => {
+        dados.forEach((a) => {
+        console.log(`Tarefa: ${a.taskName}, Descrição: ${a.taskDesc}, Prioridade: ${a.prioridade} data:${a.data}`);
+        });
+    })
 
 
 
@@ -31,8 +36,10 @@ document.addEventListener('DOMContentLoaded', () =>{
             atualizar()
         }
 
-
-
+    function deletar(i) {
+        dados.splice(i, 1);
+        atualizar();
+    }
 
     form.addEventListener("submit", (evento) =>{
         evento.preventDefault();
@@ -48,7 +55,12 @@ document.addEventListener('DOMContentLoaded', () =>{
 })
 
 
-        
+    tabela.addEventListener('click', (evento) => {
+        if(evento.target.classList.contains('btn-excluir')) {
+            const index = evento.target.getAttribute('data-index');
+            deletar(index);
+        }
+    })
 
 
     function atualizar() {
@@ -75,13 +87,8 @@ document.addEventListener('DOMContentLoaded', () =>{
             </th>      
         `
         dados.forEach((a, i) => {
-            addTarefa(a.taskName, a.taskDesc, a.prioridade, a.data)
+            addTarefa(a.taskName, a.taskDesc, a.prioridade, a.data, i)
         })
-
-        function deletar(i) {
-        dados.splice(i, 1);
-        atualizar();
-    }
     }
 })
 
