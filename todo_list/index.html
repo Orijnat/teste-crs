@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<style>
+        table, th, tr{
+            margin: auto;
+            border: 3px solid black;
+            background: #ADD8E6;
+            
+        }
+        img{
+            width: 120px;
+        }
+        #a{
+            text-align: center;
+
+        }
+
+    </style>
+<body>
+    <div>
+        <h2 id="a">Tabela de Produtos</h2>
+        <div>
+            <h3>Deseja adicionar alguma tarefa?</h3>
+            <form method="get" id="formulario">
+                <input type="text" name="input" id="taskName" placeholder="digite o nome da tarefa"></input>
+                <input type="text" name="input" id="taskDesc" placeholder="descreva a tarefa" value=""></input>
+                <input type="number" name="input" id="Prioridade" placeholder="prioridade de 1-5" min="1" max="5">
+                <input type="date" name="date" id="data">
+                <button type="submit" >enviar</button>
+            </form>
+        </div>
+
+
+
+        <button type="submit" id="teste"> aoaoa</button>
+
+    <table id="tabela">
+        <hr>
+        <!-- começo da coluna-->
+        <tr>
+            <!-- comeco da linha-->
+            <th>
+                Nome da tarefa
+            </th>
+
+            <th>
+                Descricao da Tarefa
+            </th>
+            
+            <th>
+                Prioridade
+            </th>
+            
+            <th>
+                Data de Criaçao
+            </th>
+
+            <th>
+                Ações
+            </th>
+
+            <!-- final da  linha-->
+        </tr>
+        <!-- final da coluna-->
+
+    </table>
+    </div>
+
+
+
+    <script src="./index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
