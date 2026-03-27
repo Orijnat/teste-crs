@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tabela = document.getElementById('tabela');
     const form = document.getElementById('formulario');
-    const teste = document.getElementById('teste');
     const form1 = document.getElementById('formulario1');
     const dados = JSON.parse(localStorage.getItem('tarefas')) || [];
     let indexEdicao = null;
@@ -24,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function atualizar() {
+        form.reset();
+        form1.reset();
         tabela.innerHTML = `
             <th>Nome da tarefa</th>
             <th>Descricao da Tarefa</th>
@@ -37,8 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         salvar();
 
-        form.reset();
-        form1.reset();
+        
     }
 
     function criarRegistro(taskName, taskDesc, prioridade, data) {
@@ -58,12 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dados.splice(i, 1);
         atualizar();
     }
-
-    teste.addEventListener('click', () => {
-        dados.forEach((a, i) => {
-            console.log(`(${i}) Tarefa: ${a.taskName}, Descrição: ${a.taskDesc}, Prioridade: ${a.prioridade}, Data: ${a.data}`);
-        });
-    });
 
     form.addEventListener('submit', (evento) => {
         evento.preventDefault();
