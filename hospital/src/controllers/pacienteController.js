@@ -1,4 +1,6 @@
-import Paciente from "../models/PacienteModel.js";
+import Paciente from '../models/PacienteModel.js';
+import Consultas from '../models/ConsultasModel.js';
+
 
 
 const get = async (req, res)=>{
@@ -83,45 +85,6 @@ const getId = async (req, res) => {
     }
 };
 
-const destroy = async (req, res) => {
-    try {
-        const id = req.params.id;
-
-        if (isNaN(id)) {
-            return res.status(400).send({
-                type: 'error',
-                message: 'ID inválido',
-                data: []
-            });
-        }
-
-        const paciente = await Paciente.findByPk(id);
-
-        if (!paciente) {
-            return res.status(404).send({
-                type: 'error',
-                message: 'Paciente não encontrado para exclusão',
-                data: []
-            });
-        }
-
-        await paciente.destroy();
-
-        return res.status(200).send({
-            type: 'success',
-            message: 'Registro de paciente removido',
-            data: []
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send({
-            type: 'error',
-            message: 'Erro ao deletar registro',
-            data: error.message
-        });
-    }
-};
-
 const update = async (req, res) => {
     try {
         const id = req.params.id;
@@ -170,6 +133,5 @@ export default {
     get,
     create,
     getId,
-    destroy,
     update
 }

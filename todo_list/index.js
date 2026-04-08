@@ -127,9 +127,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
-
-
-
 localStorage.setItem('testando', JSON.stringify({ teste: 'teste' }));
 JSON.parse(localStorage.getItem('testando'));

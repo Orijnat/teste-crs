@@ -6,5 +6,4 @@ export default (app) => {
     app.get('/pacientes/get-id/:id', pacienteController.getId);
     app.post('/pacientes/create', pacienteController.create);
     app.put('/pacientes/update/:id', pacienteController.update);
-    app.delete('/pacientes/delete/:id', pacienteController.destroy);
 };

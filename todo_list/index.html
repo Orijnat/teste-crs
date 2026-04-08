@@ -7,6 +7,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <style>
+
+        .main{
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .form{
+            display: flex;
+            margin-top: 50px;
+        }
+
         table, th, tr{
             margin: auto;
             border: 3px solid black;
@@ -29,9 +41,9 @@
 <body>
     <div>
         <h2 id="a">Tabela de Produtos</h2>
-        <div>
+        <div class="main">
             <h3>Deseja adicionar alguma tarefa?</h3>
-            <form method="get" id="formulario">
+            <form method="get" id="formulario" class="form">
                 <input type="text" name="input" id="taskName" placeholder="digite o nome da tarefa"></input>
                 <input type="text" name="input" id="taskDesc" placeholder="descreva a tarefa" value=""></input>
                 <input type="number" name="input" id="Prioridade" placeholder="prioridade de 1-5" min="1" max="5">
