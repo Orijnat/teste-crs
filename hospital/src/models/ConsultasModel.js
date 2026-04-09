@@ -73,4 +73,6 @@ const Consultas= sequelize.define(
     }
 }); 
 
+
+
 export default Consultas;

@@ -25,9 +25,9 @@ const PacienteDoenca = sequelize.define(
             onDelete: 'NO ACTION',
             onUpdate: 'NO ACTION',
             foreignKey: {
-                name: 'paciente_id',
+                name: 'idPaciente',
                 allowNull: false,
-                field: 'paciente_id'
+                field: 'id_paciente'
             }
         }
     );
@@ -38,9 +38,9 @@ const PacienteDoenca = sequelize.define(
             onDelete: 'NO ACTION',
             onUpdate: 'NO ACTION',
             foreignKey: {
-                name: 'doenca_id',
+                name: 'idDoenca',
                 allowNull: false,
-                field: 'doenca_id'
+                field: 'id_doenca'
             }
         }
     );

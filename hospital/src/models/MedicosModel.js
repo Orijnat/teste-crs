@@ -16,4 +16,5 @@ const Medico = sequelize.define('medicos', {
     timestamps: false
 });
 
+
 export default Medico;

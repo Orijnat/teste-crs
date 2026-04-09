@@ -1,6 +1,7 @@
 import Medico from "../models/MedicosModel.js";
 import Especializacoes from "../models/EspecializacoesModel.js";
-
+import Consultas from "../models/ConsultasModel.js";
+import Pacientes from "../models/PacienteModel.js"
 const get = async (req, res) => {
     try {
         const dados = await Medico.findAll()
@@ -21,8 +22,6 @@ const get = async (req, res) => {
         });
     }
 };
-
-
 
 const create = async (req,res) => {
     try {
@@ -135,9 +134,60 @@ const update = async (req, res) => {
     }
 }
 
+const getRelatorio= async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        if (isNaN(id)) {
+            return res.status(400).send({
+                type: 'error',
+                message: 'ID inválido',
+                data: []
+            });
+        }
+
+        const medico= await Medico.findByPk(id);
+
+        if (!medico) {
+            return res.status(404).send({
+                type: 'error',
+                message: 'Medico não encontrado',
+                data: []
+            });
+        }
+        const consultas = await Consultas.findAll({
+            where: { idMedico: id },
+            include: [{
+                model: Pacientes,
+                as: 'paciente',
+                attributes: ['nome'] 
+            }]
+        });
+        return res.status(200).send({
+            type: 'success',
+            message: 'Histórico do medico recuperado',
+            data: {
+                medico,
+                consultas
+        
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            type: 'error',
+            message: 'Erro',
+            data: error.message
+        });
+    }
+}
+
+
 export default {
     get,
     create,
     getId,
-    update
+    update,
+    getRelatorio
 };

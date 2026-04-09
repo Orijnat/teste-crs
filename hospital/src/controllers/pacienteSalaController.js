@@ -1,6 +1,7 @@
+import { where } from 'sequelize';
+import { Op } from 'sequelize';
 import PacienteSala from '../models/PacientesSalasModel.js';
-import Sala from '../models/SalaModel.js';
-import Paciente from '../models/PacienteModel.js';
+
 
 const get = async (req, res) => {
     try {
@@ -62,14 +63,15 @@ const create = async (req,res) => {
 
 const getVazio= async(req,res) =>{
     try {
-        
-        if(!dataEntrada){
-            dados= dataEntrada;     
-        }
+        const sala = await PacienteSala.findAll({where: {dataSaida: { [Op.ne]: null }}
+});
 
-        await PacienteSala.findAll(dados)
-
-    } catch (error) {
+            return res.status(200).send({
+                type: 'success',
+                message: 'sala vazia encontrada',
+                data: sala
+            })
+        } catch (error) {
         console.log(error);
         return res.status(500).send({
             type: 'error',
@@ -78,8 +80,6 @@ const getVazio= async(req,res) =>{
         });
     }
 }
-
-
 
 const getId = async (req, res) =>{
     try {
