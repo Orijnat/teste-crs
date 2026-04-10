@@ -5,5 +5,6 @@ export default (app) => {
     app.get('/laudos/get-id/:id', laudosController.getId);
     app.post('/laudos/create', laudosController.create);
     app.put('/laudos/update/:id', laudosController.update);
+    app.delete('/laudos/delete/:id', laudosController.destroy)
 
 };

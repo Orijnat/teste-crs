@@ -11,6 +11,9 @@ const Laudos = sequelize.define(
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
+        },
+        arquivos: {
+            type: DataTypes.STRING
         }
     },
 {
