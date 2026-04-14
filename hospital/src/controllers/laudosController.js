@@ -35,7 +35,7 @@ const get = async (req, res) => {
     }
 };
 
-const create = async (req,res) => {
+const create = async (req, res) => {
     try {
         const { idConsulta, idMedico, idPaciente } = req.body;
 
@@ -51,20 +51,17 @@ const create = async (req,res) => {
             idConsulta,
             idMedico,
             idPaciente
-        })
+        });
 
-
-
-
-        if(req.files && req.files.arquivos){
-            let upload= await fileupload(req.files.arquivos, {
+        if (req.files && req.files.arquivos) {
+            const upload = await fileupload(req.files.arquivos, {
                 id: retorno.id,
                 tipo: req.query.tipo || 'imagem',
                 tabela: 'laudos'
             });
 
-            retorno.arquivos = `${process.env.API_HOST}`+`${upload.path}`;
-            console.log(upload)
+            retorno.arquivos = `${process.env.API_HOST}${upload.path}`;
+            console.log(upload);
             await retorno.save();
         }
 
@@ -73,7 +70,6 @@ const create = async (req,res) => {
             message: 'Laudo criado com sucesso',
             data: retorno
         });
-
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -82,20 +78,21 @@ const create = async (req,res) => {
             data: error.message
         });
     }
-}
+};
 
-const getId = async (req, res) =>{
+const getId = async (req, res) => {
     try {
-        const id= req.params.id;
+        const id = req.params.id;
 
-        if(isNaN(id)){
+        if (isNaN(id)) {
             return res.status(400).send({
                 type: 'error',
                 message: 'ID inválido',
                 data: []
-            })
+            });
         }
-        const dados= await Laudos.findByPk(id, {
+
+        const dados = await Laudos.findByPk(id, {
             include: [
                 { model: Consultas, as: 'consulta' },
                 { model: Medico, as: 'medico' },
@@ -103,12 +100,12 @@ const getId = async (req, res) =>{
             ]
         });
 
-        if(!dados){
+        if (!dados) {
             return res.status(404).send({
                 type: 'error',
                 message: 'Laudo não encontrado',
                 data: []
-            })
+            });
         }
 
         return res.status(200).send({
@@ -116,7 +113,6 @@ const getId = async (req, res) =>{
             message: 'Laudo encontrado com sucesso',
             data: dados
         });
-
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -125,12 +121,12 @@ const getId = async (req, res) =>{
             data: error.message
         });
     }
-}
+};
 
 const update = async (req, res) => {
     try {
         const id = req.params.id;
-        const {idConsulta, idMedico, idPaciente} = req.body;
+        const { idConsulta, idMedico, idPaciente } = req.body;
 
         const dados = await Laudos.findByPk(id);
 
@@ -142,12 +138,8 @@ const update = async (req, res) => {
             });
         }
 
-        
-
-        
-
-        if(req.files && req.files.arquivos){
-            if(dados.arquivos){
+        if (req.files && req.files.arquivos) {
+            if (dados.arquivos) {
                 try {
                     const publicIndex = dados.arquivos.indexOf('public/');
                     const arquivoAntigo = publicIndex >= 0
@@ -161,17 +153,17 @@ const update = async (req, res) => {
                         console.log('Aviso: arquivo antigo não encontrado para exclusão:', caminhoArquivoAntigo);
                     }
                 } catch (err) {
-                    console.log("Aviso: Não foi possível deletar o arquivo antigo:", err.message);
+                    console.log('Aviso: Não foi possível deletar o arquivo antigo:', err.message);
                 }
             }
 
-            let upload = await fileupload(req.files.arquivos, {
+            const upload = await fileupload(req.files.arquivos, {
                 id: dados.id,
                 tipo: req.body.tipo || 'imagem',
                 tabela: 'laudos'
             });
 
-            dados.arquivos= `${process.env.API_HOST}${upload.path}`;
+            dados.arquivos = `${process.env.API_HOST}${upload.path}`;
         }
 
         dados.idConsulta = idConsulta ?? dados.idConsulta;
@@ -182,7 +174,7 @@ const update = async (req, res) => {
 
         return res.status(200).send({
             type: 'success',
-            message: 'Laudo atualizado com sucesso',  
+            message: 'Laudo atualizado com sucesso',
             data: dados
         });
     } catch (error) {
@@ -193,24 +185,23 @@ const update = async (req, res) => {
             data: error.message
         });
     }
-}
-
-
+};
 
 const destroy = async (req, res) => {
     try {
         const id = req.params.id;
 
-        if(isNaN(id)){
+        if (isNaN(id)) {
             return res.status(400).send({
                 type: 'error',
                 message: 'Este id não é um número',
                 data: []
             });
         }
+
         const dados = await Laudos.findByPk(id);
 
-        if(!dados){
+        if (!dados) {
             return res.status(404).send({
                 type: 'error',
                 message: 'Não foi encontrado um registro com codigo ' + id,
@@ -218,24 +209,24 @@ const destroy = async (req, res) => {
             });
         }
 
-        if(dados.arquivos){
+        if (dados.arquivos) {
             try {
                 const publicIndex = dados.arquivos.indexOf('public/');
                 const caminhoRelativo = publicIndex >= 0
                     ? dados.arquivos.slice(publicIndex)
                     : dados.arquivos.replace(/^https?:\/\/[^/]+/, '').replace(/^\/+/, '');
 
-                
                 const caminhoNovo = path.resolve(__dirname, '..', '..', caminhoRelativo);
 
                 if (fs.existsSync(caminhoNovo)) {
                     fs.unlinkSync(caminhoNovo);
-                    console.log("Arquivo físico removido com sucesso:", caminhoRelativo);
+                    console.log('Arquivo físico removido com sucesso:', caminhoRelativo);
                 }
             } catch (err) {
-                console.log("Aviso: Não foi possível deletar o arquivo físico:", err.message);
+                console.log('Aviso: Não foi possível deletar o arquivo físico:', err.message);
             }
         }
+
         await dados.destroy();
 
         return res.status(200).send({
@@ -243,22 +234,90 @@ const destroy = async (req, res) => {
             message: 'foi excluido com sucesso',
             data: dados
         });
-
-
     } catch (error) {
         console.log(error.message);
         return res.status(500).send({
             type: 'error',
             message: 'Ops! ocorreu um erro !!!',
             data: error.message
-        })
+        });
     }
-}
+};
+
+const updateLaudosByMedico = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { idConsulta, idMedico, idPaciente } = req.body;
+        const idMedicoToken = req.idMedicoLogado;
+        const laudo = await Laudos.findByPk(id);
+
+        if (!laudo) {
+            return res.status(404).send({
+                type: 'error',
+                message: 'Laudo não encontrado',
+                data: []
+            });
+        }
+
+        if (Number(laudo.idMedico) !== Number(idMedicoToken)) {
+            return res.status(403).send({
+                type: 'error',
+                message: 'voce nao possui autorizacao para acessar este laudo'
+            });
+        }
+
+        if (req.files && req.files.arquivos) {
+            if (laudo.arquivos) {
+                try {
+                    const publicIndex = laudo.arquivos.indexOf('public/');
+                    const arquivoAntigo = publicIndex >= 0
+                        ? laudo.arquivos.slice(publicIndex)
+                        : laudo.arquivos.replace(/^https?:\/\/[^/]+/, '').replace(/^\/+/, '');
+                    const caminhoArquivoAntigo = path.resolve(__dirname, '..', '..', arquivoAntigo);
+
+                    if (fs.existsSync(caminhoArquivoAntigo)) {
+                        fs.unlinkSync(caminhoArquivoAntigo);
+                    }
+                } catch (err) {
+                    console.log('Aviso: Não foi possível deletar o arquivo antigo:', err.message);
+                }
+            }
+
+            const upload = await fileupload(req.files.arquivos, {
+                id: laudo.id,
+                tipo: req.body.tipo || 'imagem',
+                tabela: 'laudos'
+            });
+
+            laudo.arquivos = `${process.env.API_HOST}${upload.path}`;
+        }
+
+        laudo.idConsulta = idConsulta ?? laudo.idConsulta;
+        laudo.idMedico = idMedico ?? laudo.idMedico;
+        laudo.idPaciente = idPaciente ?? laudo.idPaciente;
+
+        await laudo.save();
+
+        return res.status(200).send({
+            type: 'success',
+            message: 'Laudo atualizado com sucesso',
+            data: laudo
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            type: 'error',
+            message: 'Erro',
+            data: error.message
+        });
+    }
+};
 
 export default {
     get,
     create,
     getId,
     update,
-    destroy
+    destroy,
+    updateLaudosByMedico
 };

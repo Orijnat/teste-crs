@@ -9,7 +9,7 @@ import ProcedimentoLaudo from '../models/ProcedimentoLaudo.js';
 import MedicamentoLaudo from '../models/MedicamentosLaudoModel.js';
 
 
-const get = async (req, res)=>{
+const get = async (req, res) => {
     try{
         const dados= await Paciente.findAll();
 
@@ -17,7 +17,8 @@ const get = async (req, res)=>{
             type: 'success',
             message: 'Dados buscados com sucesso',
             data: dados
-        })}catch(error){
+        });
+    } catch (error) {
             console.log(error);
             return res.status(500).send({
                 type: 'error',
@@ -191,7 +192,7 @@ const update = async (req, res) => {
 };
 
 
-const getcura= async(req, res) =>{
+const getcura = async (req, res) => {
     try {
         const id = req.params.id;
 

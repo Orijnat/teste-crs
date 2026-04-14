@@ -1,7 +1,7 @@
 import { sequelize } from "../config/index.js";
 import { DataTypes } from "sequelize";
 
-const Usuario = sequelize.define(
+const Usuarios = sequelize.define(
     'usuario', 
     {
         id:{
@@ -11,21 +11,26 @@ const Usuario = sequelize.define(
         },
 
         email:{
-            type: DataTypes.varchar(),
+            type: DataTypes.STRING,
             allowNull:false,
             unique: true
         },
 
         nome:{
-            type: DataTypes.varchar(),
+            type: DataTypes.STRING,
             allowNull: false
         },
 
         passwordHash:{
-            type: DataTypes.varchar(),
+            type: DataTypes.STRING,
             allownull: false
+        },
+
+        nivelAcesso:{
+            type: DataTypes.INTEGER,
+            allownull:false
         }
     },
 );
 
-export default Triagem;
+export default Usuarios;

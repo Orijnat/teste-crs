@@ -10,7 +10,20 @@ const Medico = sequelize.define('medicos', {
     nome: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+
+    nivelAcesso:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
+    email:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    passwordHash:{
+            type: DataTypes.STRING,
+            allownull: false
+        }
 }, {
     freezeTableName: true,
     timestamps: false

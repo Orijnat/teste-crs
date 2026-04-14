@@ -16,6 +16,7 @@ import ProcedimentoLaudo from "./ProcedimentoLaudo.js";
 import Procedimentos from "./ProcedimentosModel.js";
 import Sala from "./SalaModel.js";
 import Triagem from "./TriagemModel.js";
+import Usuarios from "./UsuarioModel.js";
 
 (async () => {
     // await Ala.sync();
@@ -36,5 +37,6 @@ import Triagem from "./TriagemModel.js";
     // await Procedimentos.sync();
     // await Sala.sync();
     // await Triagem.sync();
+    //await Usuarios.sync();
 
 })();

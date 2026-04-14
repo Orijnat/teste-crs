@@ -63,9 +63,9 @@ const getId = async (req, res) =>{
                 data: []
             })
         }
-        const dados= await Doenca.findByPk(id);
+        const dados = await Doenca.findByPk(id);
 
-        if(!dados){
+        if (!dados) {
             return res.status(404).send({
                 type: 'error',
                 message: 'Doença não encontrada',

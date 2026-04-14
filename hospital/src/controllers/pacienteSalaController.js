@@ -61,7 +61,7 @@ const create = async (req,res) => {
     }
 }
 
-const getVazio= async(req,res) =>{
+const getVazio = async (req, res) => {
     try {
         const sala = await PacienteSala.findAll({where: {dataSaida: { [Op.ne]: null }}
 });
@@ -81,11 +81,11 @@ const getVazio= async(req,res) =>{
     }
 }
 
-const getId = async (req, res) =>{
+const getId = async (req, res) => {
     try {
         const id= req.params.id;
 
-        if(isNaN(id)){
+        if (isNaN(id)) {
             return res.status(400).send({
                 type: 'error',
                 message: 'ID inválido',
@@ -99,7 +99,7 @@ const getId = async (req, res) =>{
             ]
         });
 
-        if(!dados){
+        if (!dados) {
             return res.status(404).send({
                 type: 'error',
                 message: 'Associação Paciente-Sala não encontrada',

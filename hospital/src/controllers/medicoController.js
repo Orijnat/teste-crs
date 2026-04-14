@@ -1,7 +1,10 @@
 import Medico from "../models/MedicosModel.js";
 import Especializacoes from "../models/EspecializacoesModel.js";
 import Consultas from "../models/ConsultasModel.js";
-import Pacientes from "../models/PacienteModel.js"
+import Pacientes from "../models/PacienteModel.js";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
 const get = async (req, res) => {
     try {
         const dados = await Medico.findAll()
@@ -25,19 +28,33 @@ const get = async (req, res) => {
 
 const create = async (req,res) => {
     try {
-        const { nome } = req.body;
+        const { nome, email, password, nivelAcesso } = req.body;
 
-        if (!nome) {
+        if (!nome || !email || !password || !nivelAcesso) {
             return res.status(400).send({
                 type: 'error',
-                message: 'Campo obrigatório: nome',
+                message: 'alguns dos campos nome email, password, nivelAcesso nao foram preenchidos' ,
                 data: []
             });
         }
+        const medicoExistente = await Medico.findOne({
+            where: {
+                email
+            }
+        });
 
-        const retorno = await Medico.create({
-            nome
-        })
+        if (medicoExistente) {
+            return res.status(400).send({
+                type: 'error',
+                message: 'ja existe!'
+        });
+        }
+
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
+
+
+        const retorno = await Medico.create({ nome, nivelAcesso , passwordHash, email, });
         return res.status(201).send({
             type: 'success',
             message: 'Medico criado com sucesso',
@@ -55,11 +72,61 @@ const create = async (req,res) => {
 }
 
 
-const getId = async (req, res) =>{
+const login = async(req, res) => { 
+    try {
+        
+        const {email, password} = req.body;
+
+        if(!email || !password){
+            throw new Error("algo esta faltando")
+        }
+
+        const medicoExistente = await Medico.findOne({
+            where: {
+                email
+            }
+        });
+
+        if (!medicoExistente || !(await bcrypt.compare(req.body.password, medicoExistente.passwordHash))) {
+            return res.status(400).send({
+                type: 'error',
+                message: 'email ou senha incorretos'
+            })
+        }
+
+        const token= jwt.sign(
+            {
+                idMedico: medicoExistente.id,
+                nomeMedico: medicoExistente.nome,
+                emailMedico: medicoExistente.email,
+                acessoMedico: medicoExistente.nivelAcesso
+            },
+
+            process.env.SECRET_KEY,
+            {
+                expiresIn: '8h'
+            })
+
+            return res.status(200).send({
+                type: 'success',
+                message: 'logou',
+                data: token
+            });
+
+    }catch (error) {
+        res.status(500).send({
+            type: 'error',
+            message: 'Ops! ocorreu um erro',
+            data: error.message,
+        });
+        }
+}
+
+const getId = async (req, res) => {
     try {
         const id= req.params.id;
 
-        if(isNaN(id)){
+        if (isNaN(id)) {
             return res.status(400).send({
                 type: 'error',
                 message: 'ID inválido',
@@ -68,7 +135,7 @@ const getId = async (req, res) =>{
         }
         const dados= await Medico.findByPk(id);
 
-        if(!dados){
+        if (!dados) {
             return res.status(404).send({
                 type: 'error',
                 message: 'Medico não encontrado',
@@ -184,10 +251,14 @@ const getRelatorio= async (req, res) => {
 }
 
 
+
+
+
 export default {
     get,
     create,
     getId,
     update,
-    getRelatorio
+    getRelatorio,
+    login
 };
