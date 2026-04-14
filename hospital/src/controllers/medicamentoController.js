@@ -1,4 +1,8 @@
 import Medicamento from '../models/MedicamentoModel.js';
+import axios from 'axios';
+import * as deepl from 'deepl-node';
+
+const translator = new deepl.Translator(process.env.DEEPL_AUTH_KEY);
 
 const get = async (req, res) => {
     try {
@@ -21,20 +25,38 @@ const get = async (req, res) => {
 
 const create = async (req,res) => {
     try {
-        const { medicamento, descricao, quantidade, controlado } = req.body;
+        const { medicamento, quantidade, controlado } = req.body;
+        let { descricao } = req.body;
 
-        
-        if (!medicamento || !descricao || !quantidade) {
+        if (!medicamento || !quantidade) {
             return res.status(400).send({
                 type: 'error',
-                message: 'Campos obrigatórios: medicamento, descricao, quantidade',
+                message: 'Campos obrigatórios: medicamento, quantidade',
                 data: []
             });
         }
 
+        if (!descricao) {
+            try {
+                const fdaRes = await axios.get(`https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${medicamento}"&limit=1`);
+                const info = fdaRes.data.results[0];
+                const rawText = [
+                    info.indications_and_usage?.[0] || "",
+                    info.adverse_reactions?.[0] || ""
+                ].join("\n\n").substring(0, 1500);
+
+                if (rawText.trim()) {
+                    const translation = await translator.translateText(rawText, null, 'pt-BR');
+                    descricao = translation.text;
+                }
+            } catch (e) {
+                descricao = "Descrição automática indisponível";
+            }
+        }
+
         const retorno = await Medicamento.create({
             medicamento,
-            descricao,
+            descricao: descricao || "Sem descrição",
             quantidade,
             controlado
         })
@@ -53,7 +75,6 @@ const create = async (req,res) => {
         });
     }
 }
-
 
 const getId = async (req, res) => {
     try {
@@ -119,7 +140,6 @@ const update = async (req, res) => {
         dados.descricao = descricao ?? dados.descricao;
         dados.quantidade = quantidade ?? dados.quantidade;
         dados.controlado = controlado ?? dados.controlado;
-
 
         await dados.save();
 
