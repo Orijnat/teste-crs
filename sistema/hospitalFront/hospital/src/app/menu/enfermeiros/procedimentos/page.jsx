@@ -43,14 +43,14 @@ export default function ProcedimentosPage() {
     return (
         <main className="flex min-h-screen bg-slate-200 px-4 py-6 text-slate-900">
             <NavBar
-              itensMenu={[
+                itensMenu={[
                 { href: "/menu/enfermeiros", label: "Home", ativo: true },
                 { href: "/menu/enfermeiros/triagem", label: "Triagem", ativo: false },
                 { href: "/menu/enfermeiros/kits", label: "Kits", ativo: false}
-              ]}
+                ]}
             />
             
-            <div className="w-full max-w-4xl mx-auto rounded-2xl bg-white p-6 shadow-[0_0_40px_rgba(0,0,0,0.08)]">
+            <div className="w-full max-w-4xl mx-auto rounded-2xl mt-15 bg-white p-6 shadow-[0_0_40px_rgba(0,0,0,0.08)]">
                 <h1 className="text-2xl font-semibold mb-6">Procedimentos</h1>
                 
                 <div className="space-y-4">

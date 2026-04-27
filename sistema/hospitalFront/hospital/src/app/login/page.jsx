@@ -31,6 +31,12 @@ export default function LoginPage() {
                             className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
                         />
                     </div>
+                    <p className="text-sm text-slate-500">
+                        Esqueceu sua senha?{' '}
+                        <a href="/login/cadastro" className="font-medium text-slate-900 underline hover:text-slate-700">
+                            Clique aqui
+                        </a>
+                    </p>
 
                     <button
                         type="submit"

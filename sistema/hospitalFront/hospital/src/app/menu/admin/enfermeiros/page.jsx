@@ -74,7 +74,7 @@ export default function MenuPage() {
                 <p className="text-slate-500 text-sm leading-relaxed">
                   {item.desc}
                 </p>
-                
+
                 <div className="mt-4 flex items-center text-blue-600 font-semibold text-xs uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
                   Acessar agora →
                 </div>
