@@ -30,4 +30,5 @@ body {
   --color-botao-menu: #3CB371;
   --color-botao-menu-hover: #B33C3C;
   --color-fundo-das-paginas: var(--fundo-das-paginas);
+  --color-botao-excluir: #8B0000;
 }
