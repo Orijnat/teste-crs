@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import NavBar from "../../../../layouts/NavBar";
 import { useState } from "react";
@@ -13,39 +13,25 @@ export default function MedicamentosEnfermeirosPage() {
     { id: 6, nome: "Metformina", dosagem: "500mg", disponivel: true },
   ]);
 
-  const medicamentosDisponiveis = medicamentos.filter((med) => med.disponivel);
+  const medicamentosDisponiveis = medicamentos.filter(med => med.disponivel);
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-200 px-4 text-slate-900">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-fundo-das-paginas px-4 text-slate-900">
       <div className="absolute inset-0 bg-white/20 z-0" />
 
       <div className="z-10 w-full max-w-7xl">
         <NavBar
+          ativo= {true}
           itensMenu={[
             { label: "Home", href: "/menu/enfermeiros", ativo: false },
-            {
-              label: "Triagem",
-              href: "/menu/enfermeiros/triagem",
-              ativo: false,
-            },
-            {
-              label: "Procedimentos",
-              href: "/menu/enfermeiros/procedimentos",
-              ativo: false,
-            },
+            { label: "Triagem", href: "/menu/enfermeiros/triagem", ativo: false },
+            { label: "Procedimentos", href: "/menu/enfermeiros/procedimentos", ativo: false },
             { label: "Kits", href: "/menu/enfermeiros/kits", ativo: false },
-            {
-              label: "Medicamentos",
-              href: "/menu/enfermeiros/medicamentos",
-              ativo: true,
-            },
           ]}
         />
 
         <div className="mt-10">
-          <h1 className="text-3xl font-bold text-center mb-8">
-            Medicamentos Disponíveis
-          </h1>
+          <h1 className="text-3xl font-bold text-center mb-8">Medicamentos Disponíveis</h1>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {medicamentosDisponiveis.map((med) => (
@@ -75,10 +61,7 @@ export default function MedicamentosEnfermeirosPage() {
           )}
 
           <div className="mt-8 text-center text-sm text-slate-600">
-            <p>
-              Total de medicamentos disponíveis:{" "}
-              {medicamentosDisponiveis.length}
-            </p>
+            <p>Total de medicamentos disponíveis: {medicamentosDisponiveis.length}</p>
           </div>
         </div>
       </div>

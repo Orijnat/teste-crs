@@ -1,28 +1,52 @@
-import NavBar from "../../../layouts/NavBar";
+import CardOperacao from "@/layouts/CardOperacao";
+import Footer from "../../../layouts/Footer";
+import NavBar from "@/layouts/NavBar";
 
 export default function MenuPage() {
+  const operacoes = [
+    {
+      title: "Ver Laudos",
+      desc: "Acesse seus laudos médicos",
+      color: "border-blue-500",
+      href: "/menu/pacientes/laudos",
+    },
+    {
+      title: "Ver Procedimentos",
+      desc: "Confira os procedimentos realizados",
+      color: "border-emerald-500",
+      href: "/menu/pacientes/procedimentos",
+    },
+    {
+      title: "Ver Consultas",
+      desc: "Veja o histórico de consultas",
+      color: "border-amber-500",
+      href: "/menu/pacientes/consultas",
+    },
+  ];
+
   return (
-    <main className="relative flex min-h-screen items-center justify-center overf
-    w-hidden bg-slate-200 px-4 text-slate-900">
-      
-      <div className="absolute inset-0 bg-white/20 z-0" />
+    <div className="flex flex-col min-h-screen bg-fundo-das-paginas text-slate-900">
+      <main className="relative flex flex-col flex-1 items-center justify-center overflow-hidden px-4 py-8">
+        {/* Background overlay */}
+        <div className="absolute inset-0 bg-white/20 z-0" />
+        <NavBar/>
 
-      
-      <div className="z-10 w-full max-w-7xl">
-        <NavBar
-          itensMenu={[
-            { label: "Home", href: "/menu/medicos", ativo: true },
-            { label: "Ver Laudos", href: "/menu/pacientes/laudos", ativo: false},
-            { label: "Ver Procedimentos", href: "/menu/pacientes/procedimentos", ativo: false},
-            { label: "Ver consultas", href: "/menu/pacientes/consultas", ativo: false},
-          ]}
-        />
-        
+        {/* Content container */}
+        <div className="z-10 w-full max-w-7xl flex flex-col flex-1 justify-center">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-2 mt-10">Meu Perfil</h1>
+            <p className="text-slate-600">Acesse seus dados e documentos médicos</p>
+          </div>
 
-        <div className="text-center mt-10">
-            <h1 className="text-3xl font-bold">Bem-vindo selecione no menu a operacao que deseja realizar</h1>
+          <div className="flex-1">
+            <CardOperacao
+            operacoes={operacoes} />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+
+      {/* Footer - ocupará largura total */}
+      <Footer />
+    </div>
   );
 }

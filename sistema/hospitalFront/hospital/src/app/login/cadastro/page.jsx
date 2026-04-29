@@ -4,28 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function CadastroPage() {
-  const [userType, setUserType] = useState("medico");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [registrationNumber, setRegistrationNumber] = useState("");
-  const [specialtyOrSector, setSpecialtyOrSector] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  const isDoctor = userType === "medico";
-  const title = isDoctor ? "Cadastro de médico" : "Cadastro de enfermeiro";
-  const description = isDoctor
-    ? "Preencha os dados do médico para criar um novo usuário no sistema."
-    : "Preencha os dados do enfermeiro para criar um novo usuário no sistema.";
-  function toggleUserType() {
-    setUserType((current) => (current === "medico" ? "enfermeiro" : "medico"));
-    setRegistrationNumber("");
-    setSpecialtyOrSector("");
-    setError(null);
-  }
+  const title = "Cadastro de Usuário";
+  const description = "Preencha seus dados para criar uma conta no sistema.";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -35,8 +23,7 @@ export default function CadastroPage() {
       !name ||
       !email ||
       !password ||
-      !confirmPassword ||
-      !specialtyOrSector
+      !confirmPassword
     ) {
       setError("Preencha todos os campos");
       return;
@@ -55,9 +42,7 @@ export default function CadastroPage() {
         body: JSON.stringify({
           name,
           email,
-          password,
-          userType,
-          specialtyOrSector,
+          password
         }),
       });
 
@@ -70,8 +55,6 @@ export default function CadastroPage() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      setRegistrationNumber("");
-      setSpecialtyOrSector("");
       router.push("/login");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao registrar");
@@ -79,22 +62,13 @@ export default function CadastroPage() {
       setLoading(false);
     }
   }
-
   return (
+
     <main className="flex min-h-screen items-center justify-center bg-fundo-das-paginas px-4 text-slate-900">
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-[0_0_40px_rgba(0,0,0,0.08)]">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-semibold">{title}</h1>
-            <p className="mt-1 text-sm text-slate-500">{description}</p>
-          </div>
-          <button
-            type="button"
-            onClick={toggleUserType}
-            className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 transition hover:border-slate-900 hover:text-slate-900"
-          >
-            {isDoctor ? "Trocar para enfermeiro" : "Trocar para médico"}
-          </button>
+        <div>
+          <h1 className="text-2xl font-semibold">{title}</h1>
+          <p className="mt-1 text-sm text-slate-500">{description}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -170,14 +144,10 @@ export default function CadastroPage() {
             disabled={loading}
             className="w-full rounded-lg bg-slate-900 px-4 py-2 font-medium text-white transition disabled:opacity-60 hover:bg-slate-700"
           >
-            {loading
-              ? "Registrando..."
-              : isDoctor
-                ? "Cadastrar médico"
-                : "Cadastrar enfermeiro"}
+            {loading ? "Registrando..." : "Cadastrar"}
           </button>
         </form>
       </div>
     </main>
-  );
+    );
 }

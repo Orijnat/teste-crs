@@ -41,12 +41,14 @@ export default function ProcedimentosPage() {
     };
 
     return (
-        <main className="flex min-h-screen bg-slate-200 px-4 py-6 text-slate-900">
+        <main className="flex min-h-screen bg-fundo-das-paginas px-4 py-6 text-slate-900">
             <NavBar
+            ativo= {true}
                 itensMenu={[
                 { href: "/menu/enfermeiros", label: "Home", ativo: true },
                 { href: "/menu/enfermeiros/triagem", label: "Triagem", ativo: false },
-                { href: "/menu/enfermeiros/kits", label: "Kits", ativo: false}
+                { href: "/menu/enfermeiros/kits", label: "Kits", ativo: false}, 
+                { href: "/menu/enfermeiros/medicamentos", label: "Medicamentos", ativo: false}
                 ]}
             />
             

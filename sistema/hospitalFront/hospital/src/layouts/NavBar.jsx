@@ -4,26 +4,26 @@ import { IoMdClose } from "react-icons/io";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function NavBar({ itensMenu = [] }) {
+export default function NavBar({ itensMenu = [],ativo }) {
     const [sidebarAberta, setSidebarAberta] = useState(false);
 
     return (
         <div className="block">
-        <nav className="fixed inset-x-0 top-0 z-20 border-b border-black/10 bg-azul-unochapeco">
+        <nav className="fixed inset-x-0 top-0 z-20 rounded-2xl shadow-sm border-b-4 border-green-300 bg-white/50 backdrop-blur-md">
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-            <a href="http://localhost:3000/" className="flex items-center gap-3">
+            <a href="/" className="flex items-center gap-3">
                 <span className="whitespace-nowrap text-xl font-semibold text-black">Sistema Hospitalar</span>
             </a>
 
             <div className="flex items-center gap-2">
-                <button
+                {ativo &&(<button
                 type="button"
                 onClick={() => setSidebarAberta(true)}
                 className="rounded-md border bg-botao-menu border-black/20 px-3 py-2 text-sm font-medium text-black transition-colors hover:bg-botao-menu-hover"
                 aria-label="Abrir menu"
                 >
                 Menu
-                </button>
+                </button>)}
 
             </div>
             </div>

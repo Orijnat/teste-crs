@@ -48,14 +48,17 @@ export default function LaudosPage() {
     }
 
     return (
-        <main className="min-h-screen bg-[linear-gradient(135deg,#e2e8f0_0%,#f8fafc_46%,#dbeafe_100%)] px-4 py-8 text-slate-900">
+        <main className="min-h-screen bg-fundo-das-paginas px-4 py-8 text-slate-900">
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
                 <NavBar
+                ativo= {true}
                     itensMenu={[
                         { href: "/menu/medicos", label: "Home", ativo: false },
                         { href: "/menu/medicos/consultas", label: "Consultas", ativo: false },
                         { href: "/menu/medicos/procedimentos", label: "Procedimentos", ativo: false },
                         { href: "/menu/medicos/kits", label: "Kits", ativo: false },
+                        { href: "/menu/medicos/medicamentos", label: "Medicamentos", ativo: false },
+                        { href: "/menu/medicos/salas", label: "Salas", ativo: false },
                     ]}
                 />
 

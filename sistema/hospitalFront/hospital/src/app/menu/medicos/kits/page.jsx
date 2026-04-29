@@ -2,13 +2,17 @@
 
     export default function ProcedimentosPage() {
         return (
-            <main className="flex min-h-screen items-center justify-center bg-slate-200 px-4 text-slate-900">
+            <main className="flex min-h-screen items-center justify-center bg-fundo-das-paginas px-4 text-slate-900">
                 <NavBar
+                ativo= {true}
                 itensMenu={[
                     { href: "/menu/medicos", label: "Home", ativo: true },
                     { href: "/menu/medicos/consultas", label: "Consultas", ativo: false },
-                    { href: "/menu/medicos/procedimentos", label: "Procedimentos", ativo: false},
-                ]}
+                    { href: "/menu/medicos/laudos", label: "Laudos", ativo: false },
+                    { href: "/menu/medicos/procedimentos", label: "Procedimentos", ativo: false },
+                    { href: "/menu/medicos/medicamentos", label: "Medicamentos", ativo: false },
+                    { href: "/menu/medicos/salas", label: "Salas", ativo: false },
+                    ]}
                 />
                 
                 <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-[0_0_40px_rgba(0,0,0,0.08)]">

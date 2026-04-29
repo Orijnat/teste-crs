@@ -26,11 +26,12 @@ const consultas = [
 
 export default function ConsultasPacientePage() {
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-200 px-4 text-slate-900">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-fundo-das-paginas px-4 text-slate-900">
       <div className="absolute inset-0 z-0 bg-white/20" />
 
       <div className="z-10 w-full max-w-7xl">
         <NavBar
+        ativo={true}
           itensMenu={[
             { label: "Home", href: "/menu/pacientes", ativo: false },
             { label: "Ver Laudos", href: "/menu/pacientes/laudos", ativo: false },
@@ -39,8 +40,7 @@ export default function ConsultasPacientePage() {
               href: "/menu/pacientes/procedimentos",
               ativo: false,
             },
-            { label: "Ver Consultas", href: "/menu/pacientes/consultas", ativo: true },
-          ]}
+            ]}
         />
 
         <section className="mt-10 rounded-2xl bg-white p-6 shadow-md">

@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --fundo-das-paginas: #cbd5e1;
 }
 
 @theme inline {
@@ -28,4 +29,5 @@ body {
 @theme{
   --color-botao-menu: #3CB371;
   --color-botao-menu-hover: #B33C3C;
+  --color-fundo-das-paginas: var(--fundo-das-paginas);
 }

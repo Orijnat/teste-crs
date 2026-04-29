@@ -1,31 +1,72 @@
+import CardOperacao from "@/layouts/CardOperacao";
+import Footer from "../../../layouts/Footer";
 import NavBar from "../../../layouts/NavBar";
 
 export default function MenuPage() {
+  const operacoes = [
+    {
+      title: "Consultas",
+      desc: "Realização de consultas",
+      color: "border-blue-500",
+      href: "/menu/medicos/consultas",
+    },
+    {
+      title: "Laudos",
+      desc: "Criação e gerenciamento de laudos médicos",
+      color: "border-emerald-500",
+      href: "/menu/medicos/laudos",
+    },
+    {
+      title: "Kits",
+      desc: "Gestão de insumos e materiais",
+      color: "border-amber-500",
+      href: "/menu/medicos/kits",
+    },
+    {
+      title: "Medicamentos",
+      desc: "Controle de estoque",
+      color: "border-rose-500",
+      href: "/menu/medicos/medicamentos",
+    },
+    {
+      title: "Salas",
+      desc: "Gerenciamento de salas de procedimento",
+      color: "border-violet-500",
+      href: "/menu/medicos/salas",
+    },
+    {
+      title: "Procedimentos",
+      desc: "Criar e gerenciar procedimentos",
+      color: "border-cyan-500",
+      href: "/menu/medicos/procedimentos",
+    },
+  ];
+
   return (
-    <main className="relative flex min-h-screen items-center justify-center overf
-    w-hidden bg-slate-200 px-4 text-slate-900">
-      
-      <div className="absolute inset-0 bg-white/20 z-0" />
-
-      
-      <div className="z-10 w-full max-w-7xl">
-        <NavBar
-          itensMenu={[
-            { label: "Home", href: "/menu/medicos", ativo: true },
-            { label: "Consultas", href: "/menu/medicos/consultas", ativo: false },
-            { label :"Laudos", href: "/menu/medicos/laudos", ativo: false},
-            { label: "Procedimentos", href: "/menu/medicos/procedimentos", ativo: false}, 
-            { label: "Kits", href: "/menu/medicos/kits", ativo: false},
-            { label: "Medicamentos", href: "/menu/medicos/medicamentos", ativo: false},
-            { label: "Salas", href: "/menu/medicos/salas", ativo: false},  
-          ]}
-        />
+    <div className="flex flex-col min-h-screen bg-fundo-das-paginas text-slate-900">
+      <main className="relative flex flex-col flex-1 items-center justify-center overflow-hidden px-4 py-8">
+        {/* Background overlay */}
+        <div className="absolute inset-0 bg-white/20 z-0" />
         
+        <NavBar ativo={false} />
 
-        <div className="text-center mt-10">
-            <h1 className="text-3xl font-bold">Bem-vindo selecione no menu a operacao que deseja realizar</h1>
+
+
+        {/* Content container */}
+        <div className="z-10 w-full max-w-7xl flex flex-col flex-1 justify-center">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-2 ">Painel Médico</h1>
+            <p className="text-slate-600">Gerencie suas consultas, laudos e procedimentos</p>
+          </div>
+
+          <div className="w-full">
+            <CardOperacao operacoes={operacoes} />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+
+      {/* Footer - ocupará largura total */}
+      <Footer />
+    </div>
   );
 }
