@@ -123,20 +123,36 @@ export default function MenuPage() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="idMedico" className="mb-1 block text-sm font-medium">
-                                        ID do médico
+                                    <label htmlFor="idPaciente" className="mb-1 block text-sm font-medium">
+                                        ID do paciente
                                     </label>
                                     <input
-                                        id="idMedico"
-                                        name="idMedico"
+                                        id="idPaciente"
+                                        name="idPaciente"
                                         type="text"
-                                        value={idMedico}
-                                        onChange={(e) => setIdMedico(e.target.value)}
-                                        placeholder="Id do médico responsável"
+                                        value={idPaciente}
+                                        readOnly
+                                        placeholder="Preenchido automaticamente pela triagem"
                                         autoComplete="off"
-                                        className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
+                                        className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-900"
                                     />
                                 </div>
+                            </div>
+
+                            <div>
+                                <label htmlFor="idMedico" className="mb-1 block text-sm font-medium">
+                                    ID do médico
+                                </label>
+                                <input
+                                    id="idMedico"
+                                    name="idMedico"
+                                    type="text"
+                                    value={idMedico}
+                                    onChange={(e) => setIdMedico(e.target.value)}
+                                    placeholder="Id do médico responsável"
+                                    autoComplete="off"
+                                    className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
+                                />
                             </div>
 
                             <div>
