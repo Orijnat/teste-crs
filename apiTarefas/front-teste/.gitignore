@@ -1,41 +1,37 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+.env
+    .next/
+    node_modules/
+    ```
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+3.  **Limpe o que já foi "visto" pelo Git:**
+    Se por acaso o Git insistir em mostrar esses arquivos mesmo após criar o `.gitignore`, rode:
+    
+```bash
+    git rm -r --cached ../../../apiTarefas/front-teste/.next/
+    ```
 
-# testing
-/coverage
+### Resumo da situação agora:
+Seu `git status` está mostrando uma bagunça porque:
+1.  Existem **repositórios dentro de repositórios** (conversa anterior).
+2.  Existem **arquivos de configuração e build** (como `.env` e `.next`) que precisam ser ignorados.
 
-# next.js
-/.next/
-/out/
+**Dica:** Foque primeiro em resolver os submódulos (remover as pastas `.git` internas) e depois configure o `.gitignore`. Isso vai "limpar" sua tela e deixar apenas o código que realmente importa para o commit.
 
-# production
-/build
+# Dependências
+node_modules/
 
-# misc
-.DS_Store
-*.pem
+# Build do Next.js
+.next/
+out/
 
-# debug
+# Variáveis de ambiente (Segurança!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
