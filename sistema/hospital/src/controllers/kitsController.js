@@ -132,9 +132,50 @@ const update = async (req, res) => {
     }
 }
 
+    const remove = async (req, res) => {
+        try {
+            const id = req.params.id;
+
+            if (isNaN(id)) {
+                return res.status(400).send({
+                    type: 'error',
+                    message: 'ID inválido',
+                    data: []
+                });
+            }
+
+            const dados = await Kits.findByPk(id);
+
+            if (!dados) {
+                return res.status(404).send({
+                    type: 'error',
+                    message: 'Kit não encontrado',
+                    data: []
+                });
+            }
+
+            await dados.destroy();
+
+            return res.status(200).send({
+                type: 'success',
+                message: 'Kit deletado com sucesso',
+                data: []
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                type: 'error',
+                message: 'Erro',
+                data: error.message
+            });
+        }
+    }
+
+
 export default {
     get,
     create,
     getId,
-    update
+    update,
+    remove
 };

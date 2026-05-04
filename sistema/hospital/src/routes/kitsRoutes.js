@@ -5,4 +5,5 @@ export default (app) => {
   app.get('/kits/get-id/:id', kitsController.getId);
   app.post('/kits/create', kitsController.create);
   app.put('/kits/update/:id', kitsController.update);
+  app.delete('/kits/delete/:id', kitsController.remove);
 };

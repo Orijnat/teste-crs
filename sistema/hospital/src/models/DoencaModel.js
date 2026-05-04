@@ -10,12 +10,6 @@ const Doenca = sequelize.define(
             autoIncrement: true
         },
 
-        doenca: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
-
         descricao: {
             type: DataTypes.STRING,
             allowNull: false

@@ -30,14 +30,16 @@ const get = async (req, res) => {
 
 const create= async (req, res) => {
     try {
-        const { nome, idade, altura, peso } = req.body;
+        const { nome, idade, altura, peso, email, passwordHash } = req.body;
 
 
         const retorno = await Paciente.create({
             nome,
             idade,
             altura,
-            peso
+            peso,
+            email,
+            passwordHash
         });
 
         return res.status(201).send({

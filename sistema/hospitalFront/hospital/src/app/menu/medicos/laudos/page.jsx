@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import NavBar from "../../../../layouts/NavBar";
+import api from "../../../../utils/api";
 
 const initialForm = {
     tipoLaudo: "",
@@ -15,6 +16,16 @@ export default function LaudosPage() {
     const [form, setForm] = useState(initialForm);
     const [laudos, setLaudos] = useState([]);
     const [mensagem, setMensagem] = useState("");
+
+    const pegarLaudos = () => async () => {
+        const dados = await api.get("/laudos/get-all");
+        setLaudos(dados.data?.data ?? []);    
+    }
+
+    console.log("Laudos recebidos:", laudos);
+
+
+
 
     function handleChange(event) {
         const { name, value } = event.target;

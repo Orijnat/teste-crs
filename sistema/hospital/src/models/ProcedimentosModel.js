@@ -4,6 +4,7 @@ import Kit from "./KitsModel.js";
 import Sala from "./SalaModel.js";
 import Enfermeiros from "./EnfermeirosModel.js";
 import Medico from "./MedicosModel.js";
+import Paciente from "./PacienteModel.js";
 
 const Procedimentos = sequelize.define(
     'procedimentos', 
@@ -17,8 +18,8 @@ const Procedimentos = sequelize.define(
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        descricao: {
-            type: DataTypes.STRING(255),
+        prioridade: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         }
     },
@@ -76,5 +77,20 @@ const Procedimentos = sequelize.define(
     }
         
 );
+
+    Procedimentos.belongsTo(Paciente,
+    {
+        as: 'paciente',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION',
+        foreignKey: {
+            name: 'idPaciente',
+            allowNull: false,
+            field: 'id_paciente'
+        }
+    }
+);
+
+
 
 export default Procedimentos;

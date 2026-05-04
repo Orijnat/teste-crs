@@ -3,6 +3,7 @@ import Kit from '../models/KitsModel.js';
 import Sala from '../models/SalaModel.js';
 import Enfermeiros from '../models/EnfermeirosModel.js';
 import Medico from '../models/MedicosModel.js';
+import Paciente from '../models/PacienteModel.js';
 
 const get = async (req, res) => {
     try {
@@ -11,7 +12,8 @@ const get = async (req, res) => {
                 { model: Kit, as: 'kit' },
                 { model: Sala, as: 'sala' },
                 { model: Enfermeiros, as: 'enfermeiro' },
-                { model: Medico, as: 'medico' }
+                { model: Medico, as: 'medico' },
+                { model: Paciente, as: 'paciente'}
             ]
         });
 
@@ -32,23 +34,24 @@ const get = async (req, res) => {
 
 const create = async (req,res) => {
     try {
-        const { nome, descricao, idKit, idSala, idEnfermeiro, idMedico } = req.body;
+        const { nome,  idKit, idSala, idEnfermeiro, idMedico, idPaciente, prioridade } = req.body;
 
-        if (!nome || !descricao || !idKit || !idSala || !idEnfermeiro || !idMedico) {
+        if (!nome || !idKit || !idSala || !idEnfermeiro || !idMedico || !idPaciente || !prioridade) {
             return res.status(400).send({
                 type: 'error',
-                message: 'Todos os campos são obrigatórios: nome, descricao, idKit, idSala, idEnfermeiro, idMedico',
+                message: 'Todos os campos são obrigatórios: nome, idKit, idSala, idEnfermeiro, idMedico, idPaciente',
                 data: []
             });
         }
 
         const retorno = await Procedimentos.create({
             nome,
-            descricao,
             idKit,
             idSala,
             idEnfermeiro,
-            idMedico
+            idMedico,
+            idPaciente,
+            prioridade
         })
         return res.status(201).send({
             type: 'success',
@@ -83,7 +86,8 @@ const getId = async (req, res) => {
                 { model: Kit, as: 'kit' },
                 { model: Sala, as: 'sala' },
                 { model: Enfermeiros, as: 'enfermeiro' },
-                { model: Medico, as: 'medico' }
+                { model: Medico, as: 'medico' },
+                { model: Paciente, as: 'paciente' }
             ]
         });
 
@@ -114,7 +118,7 @@ const getId = async (req, res) => {
 const update = async (req, res) => {
     try {
         const id = req.params.id;
-        const { nome, descricao, idKit, idSala, idEnfermeiro, idMedico } = req.body;
+        const { nome, idKit, idSala, idEnfermeiro, idMedico, idPaciente, prioridade } = req.body;
 
         if (isNaN(id)) {
             return res.status(400).send({
@@ -134,13 +138,13 @@ const update = async (req, res) => {
             });
         }
 
-        dados.nome = nome ?? dados.nome;
-        dados.descricao = descricao ?? dados.descricao;
+        dados.nome = nome ?? dados.nome;;
         dados.idKit = idKit ?? dados.idKit;
         dados.idSala = idSala ?? dados.idSala;
         dados.idEnfermeiro = idEnfermeiro ?? dados.idEnfermeiro;
         dados.idMedico = idMedico ?? dados.idMedico;
-
+        dados.idPaciente = idPaciente ?? dados.idPaciente;
+        dados.prioridade = prioridade ?? dados.prioridade;  
         await dados.save();
 
         return res.status(200).send({

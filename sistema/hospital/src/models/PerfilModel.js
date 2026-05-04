@@ -21,7 +21,7 @@ const Perfil = sequelize.define(
         nivelAcesso: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            comment: 'Nível numérico de acesso (1-Administrativo, 2-Médico, 3-Enfermeiro)'
+            comment: 'Nível numérico de acesso (1-Administrativo, 2-Médico, 3-Enfermeiro, 4-Paciente)'
         }
     },
     {

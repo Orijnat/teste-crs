@@ -17,6 +17,12 @@ const Consultas= sequelize.define(
         data:{
             type: DataTypes.DATE,
             allowNull:false,
+        },
+        relato_paciente:{
+            type: DataTypes.STRING(),
+            allowNull: true,
+            name: 'relatoPaciente',
+            field: 'relato_paciente'
         }
     },
     {

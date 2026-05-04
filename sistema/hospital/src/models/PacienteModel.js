@@ -28,7 +28,17 @@ const Paciente = sequelize.define(
         peso:{
             type:DataTypes.FLOAT,
             allowNull:false,
-        }
+        },
+
+        email:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        
+        passwordHash:{
+                type: DataTypes.STRING,
+                allownull: false
+            } 
     },
     {
         freezeTableName: true,

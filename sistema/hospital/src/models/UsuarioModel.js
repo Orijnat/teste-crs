@@ -23,7 +23,7 @@ const Usuarios = sequelize.define(
 
         passwordHash:{
             type: DataTypes.STRING,
-            allownull: false
+            allowNull: false
         },
 
         perfilId:{

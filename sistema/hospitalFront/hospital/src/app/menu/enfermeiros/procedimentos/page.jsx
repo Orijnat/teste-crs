@@ -1,38 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBar from "../../../../layouts/NavBar";
+import api from "../../../../utils/api";
 
 export default function ProcedimentosPage() {
-    const [procedimentos, setProcedimentos] = useState([
-        {
-            id: 1,
-            nome: "Injeção intravenosa",
-            kits: "Kit IV",
-            paciente: "Paciente 001",
-            medico: "Dr. Silva",
-            sala: "Sala 101",
-            feito: false
-        },
-        {
-            id: 2,
-            nome: "Curativo de ferida",
-            kits: "Kit Curativos",
-            paciente: "Paciente 002",
-            medico: "Dra. Santos",
-            sala: "Sala 102",
-            feito: false
-        },
-        {
-            id: 3,
-            nome: "Verificação de pressão",
-            kits: "Esfigmomanômetro",
-            paciente: "Paciente 003",
-            medico: "Dr. Costa",
-            sala: "Sala 103",
-            feito: false
+    const [procedimentos, setProcedimentos] = useState([]);
+
+    const procedimentosOrdenados = [...procedimentos].sort((a, b) => {
+        const prioridadeA = Number(a?.prioridade ?? Number.POSITIVE_INFINITY);
+        const prioridadeB = Number(b?.prioridade ?? Number.POSITIVE_INFINITY);
+
+        return prioridadeA - prioridadeB;
+    });
+
+
+    const buscarProcedimentos= async () => {
+        try {
+            const response = await api.get("/procedimentos/get-all");
+        setProcedimentos(response.data?.data);
+            console.log("Procedimentos recebidos:", response.data);
+        }catch (error) {
+            console.error("Erro ao buscar procedimentos:", error);
         }
-    ]);
+    }
+
+    useEffect(() => {
+        buscarProcedimentos();
+    }, []);
+
 
     const marcarComoFeito = (id) => {
         setProcedimentos(procedimentos.map(proc =>
@@ -56,7 +52,7 @@ export default function ProcedimentosPage() {
                 <h1 className="text-2xl font-semibold mb-6">Procedimentos</h1>
                 
                 <div className="space-y-4">
-                    {procedimentos.map((procedimento) => (
+                    {procedimentosOrdenados?.map((procedimento) => (
                         <div
                             key={procedimento.id}
                             className={`border-2 rounded-lg p-4 transition ${
@@ -73,10 +69,10 @@ export default function ProcedimentosPage() {
                                         {procedimento.nome}
                                     </h2>
                                     <div className="mt-2 space-y-1 text-sm text-slate-600">
-                                        <p><strong>Kits:</strong> {procedimento.kits}</p>
-                                        <p><strong>Paciente:</strong> {procedimento.paciente}</p>
-                                        <p><strong>Médico:</strong> {procedimento.medico}</p>
-                                        <p><strong>Sala:</strong> {procedimento.sala}</p>
+                                        <p><strong>Kits:</strong> {procedimento.kit?.nome}</p>
+                                        <p><strong>Paciente:</strong> {procedimento.paciente?.nome}</p>
+                                        <p><strong>Médico:</strong> {procedimento.medico?.nome}</p>
+                                        <p><strong>Sala:</strong> {procedimento.sala?.numero}</p>
                                     </div>
                                 </div>
                                 
@@ -93,13 +89,15 @@ export default function ProcedimentosPage() {
                             </div>
                         </div>
                     ))}
-                </div>
 
-                {procedimentos.length === 0 && (
+                    {procedimentos?.length === 0 && (
                     <p className="text-center text-slate-500 py-8">
                         Nenhum procedimento disponível
                     </p>
                 )}
+                </div>
+
+                
             </div>
         </main>
     );

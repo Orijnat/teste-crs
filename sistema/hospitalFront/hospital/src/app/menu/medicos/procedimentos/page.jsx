@@ -2,50 +2,53 @@
 
 import { useState } from "react";
 import NavBar from "../../../../layouts/NavBar";
-
-const initialForm = {
-    procedimento: "",
-    kits: "",
-    idPaciente: "",
-    idMedico: "",
-    sala: "",
-};
+import api from "../../../../utils/api"
 
 export default function ProcedimentosPage() {
-    const [form, setForm] = useState(initialForm);
-    const [procedimentos, setProcedimentos] = useState([]);
-    const [mensagem, setMensagem] = useState("");
+    const [nome, setNome] = useState("");
+    const [idKit, setIdKit] = useState("");
+    const [idPaciente, setIdPaciente] = useState("");
+    const [idMedico, setIdMedico] = useState("");
+    const [idEnfermeiro, setIdEnfermeiro] = useState("");
+    const [idSala, setIdSala] = useState("");
+    const [prioridade, setPrioridade] = useState("");
 
-    function handleChange(event) {
-        const { name, value } = event.target;
 
-        setForm((currentForm) => ({
-            ...currentForm,
-            [name]: value,
-        }));
+
+ const criarProcedimento = async (e) => {
+
+    e.preventDefault();
+    try {
+
+        const dados = {
+            nome,
+            idKit,
+            idPaciente,
+            idMedico,
+            idEnfermeiro,
+            idSala,
+            prioridade
+        };
+
+        const response = await api.post("/procedimentos/create", dados);
+        
+        console.log("Procedimento criado:", response.data);
+
+        setNome("");
+        setIdKit("");
+        setIdPaciente("");
+        setIdMedico("");
+        setIdEnfermeiro("");
+        setIdSala("");
+        setPrioridade("");
+        alert("Procedimento criado com sucesso!")
+
+
+    } catch (error) {
+        console.error("Erro ao criar procedimento:", error);
     }
 
-    function handleSubmit(event) {
-        event.preventDefault();
-
-        const camposObrigatorios = Object.values(form).some((valor) => !valor.trim());
-
-        if (camposObrigatorios) {
-            setMensagem("Preencha todos os campos para criar o procedimento.");
-            return;
-        }
-
-        setProcedimentos((currentProcedimentos) => [
-            {
-                id: crypto.randomUUID(),
-                ...form,
-            },
-            ...currentProcedimentos,
-        ]);
-
-        setForm(initialForm);
-        setMensagem("Procedimento criado com sucesso.");
-    }
+    };
 
     return (
         <main className="min-h-screen bg-fundo-das-paginas px-4 py-8 text-slate-900">
@@ -69,17 +72,17 @@ export default function ProcedimentosPage() {
                             Registre o procedimento, os kits necessários e os dados de atendimento para manter o fluxo da unidade organizado.
                         </p>
 
-                        <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
-                            <div>
-                                <label htmlFor="procedimento" className="mb-1 block text-sm font-medium">
+                        <form className="mt-8 space-y-4" onSubmit={criarProcedimento}>
+                                <div>
+                                    <label htmlFor="procedimento" className="mb-1 block text-sm font-medium">
                                     Procedimento
                                 </label>
                                 <input
                                     id="procedimento"
                                     name="procedimento"
                                     type="text"
-                                    value={form.procedimento}
-                                    onChange={handleChange}
+                                    value={nome}
+                                    onChange={(e) => setNome(e.target.value)}
                                     placeholder="Procedimento a ser realizado"
                                     autoComplete="off"
                                     className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
@@ -94,9 +97,9 @@ export default function ProcedimentosPage() {
                                     id="kits"
                                     name="kits"
                                     type="text"
-                                    value={form.kits}
-                                    onChange={handleChange}
-                                    placeholder="Kits necessários"
+                                    value={idKit}
+                                    onChange={(e) => setIdKit(e.target.value)}
+                                    placeholder="Informe o ID do kit necessário"
                                     autoComplete="off"
                                     className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
                                 />
@@ -111,8 +114,8 @@ export default function ProcedimentosPage() {
                                         id="idPaciente"
                                         name="idPaciente"
                                         type="text"
-                                        value={form.idPaciente}
-                                        onChange={handleChange}
+                                        value={idPaciente}
+                                        onChange={(e) => setIdPaciente(e.target.value)}
                                         placeholder="Id do paciente"
                                         autoComplete="off"
                                         className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
@@ -127,13 +130,47 @@ export default function ProcedimentosPage() {
                                         id="idMedico"
                                         name="idMedico"
                                         type="text"
-                                        value={form.idMedico}
-                                        onChange={handleChange}
+                                        value={idMedico}
+                                        onChange={(e) => setIdMedico(e.target.value)}
                                         placeholder="Id do médico responsável"
                                         autoComplete="off"
                                         className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
                                     />
                                 </div>
+
+                                <div>
+                                    <label htmlFor="idEnfermeiro" className="mb-1 block text-sm font-medium">
+                                        ID do enfermeiro
+                                    </label>
+                                    <input
+                                        id="idEnfermeiro"
+                                        name="idEnfermeiro"
+                                        type="text"
+                                        value={idEnfermeiro}
+                                        onChange={(e) => setIdEnfermeiro(e.target.value)}
+                                        placeholder="Id do enfermeiro responsável"
+                                        autoComplete="off"
+                                        className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="prioridade" className="mb-1 block text-sm font-medium">
+                                        Prioridade
+                                    </label>
+                                    <input
+                                        id="prioridade"
+                                        name="prioridade"
+                                        type="text"
+                                        value={prioridade}
+                                        onChange={(e) => setPrioridade(e.target.value)}
+                                        placeholder="Prioridade (ex: 1, 2, 3)"
+                                        autoComplete="off"
+                                        className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
+                                    />
+
+                                </div>
+
                             </div>
 
                             <div>
@@ -144,17 +181,13 @@ export default function ProcedimentosPage() {
                                     id="sala"
                                     name="sala"
                                     type="text"
-                                    value={form.sala}
-                                    onChange={handleChange}
-                                    placeholder="Sala onde o procedimento será realizado"
+                                    value={idSala}
+                                    onChange={(e) => setIdSala(e.target.value)}
+                                    placeholder="Id da Sala onde o procedimento será realizado"
                                     autoComplete="off"
                                     className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
                                 />
                             </div>
-
-                            {mensagem ? (
-                                <p className="rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700">{mensagem}</p>
-                            ) : null}
 
                             <button
                                 type="submit"

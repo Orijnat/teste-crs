@@ -1,5 +1,6 @@
 import Enfermeiros from "../models/EnfermeirosModel.js";
 import Perfil from "../models/PerfilModel.js";
+import bcrypt from 'bcrypt';
 
 const get = async (req, res) => {
     try {
@@ -28,12 +29,12 @@ const get = async (req, res) => {
 
 const create = async (req,res) => {
     try {
-        const { nome, perfilId } = req.body;
+        const { nome, email, password, perfilId } = req.body;
 
-        if (!nome || !perfilId) {
+        if (!nome || !email || !password || !perfilId) {
             return res.status(400).send({
                 type: 'error',
-                message: 'Campos obrigatórios: nome, perfilId',
+                message: 'Campos obrigatórios: nome, email, password, perfilId',
                 data: []
             });
         }
@@ -48,9 +49,28 @@ const create = async (req,res) => {
             });
         }
 
+        const enfermeiroExistente = await Enfermeiros.findOne({
+            where: {
+                email
+            }
+        });
+
+        if (enfermeiroExistente) {
+            return res.status(400).send({
+                type: 'error',
+                message: 'ja existe!',
+                data: []
+            });
+        }
+
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
+
         const retorno = await Enfermeiros.create({
             nome,
-            perfilId
+            perfilId,
+            email,
+            passwordHash
         })
         return res.status(201).send({
             type: 'success',

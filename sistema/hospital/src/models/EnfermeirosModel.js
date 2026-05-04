@@ -22,7 +22,16 @@ const Enfermeiros = sequelize.define(
                 model: 'perfil',
                 key: 'id'
             }
-        }
+        },
+        email:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        passwordHash:{
+                type: DataTypes.STRING,
+                allownull: false
+            } 
     },
     {
         freezeTableName: true,

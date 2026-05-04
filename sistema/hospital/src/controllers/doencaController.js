@@ -21,23 +21,22 @@ const get = async (req, res) => {
 
 const create = async (req,res) => {
     try {
-        const { doenca, descricao } = req.body;
+        const { descricao } = req.body;
 
-        if (!doenca || !descricao) {
+        if (!descricao) {
             return res.status(400).send({
                 type: 'error',
-                message: 'Campos obrigatórios: doenca, descricao',
+                message: 'Campo obrigatório: descricao',
                 data: []
             });
         }
 
         const retorno = await Doenca.create({
-            doenca,
             descricao
         })
         return res.status(201).send({
             type: 'success',
-            message: 'Doença criada com sucesso',
+            message: 'Descrição criada com sucesso',
             data: retorno
         });
 
@@ -68,14 +67,14 @@ const getId = async (req, res) =>{
         if (!dados) {
             return res.status(404).send({
                 type: 'error',
-                message: 'Doença não encontrada',
+                message: 'Descrição não encontrada',
                 data: []
             })
         }
 
         return res.status(200).send({
             type: 'success',
-            message: 'Doença encontrada com sucesso',
+            message: 'Descrição encontrada com sucesso',
             data: dados
         });
 
@@ -92,7 +91,7 @@ const getId = async (req, res) =>{
 const update = async (req, res) => {
     try {
         const id = req.params.id;
-        const { doenca, descricao } = req.body;
+        const { descricao } = req.body;
 
         if (isNaN(id)) {
             return res.status(400).send({
@@ -107,19 +106,18 @@ const update = async (req, res) => {
         if (!dados) {
             return res.status(404).send({
                 type: 'error',
-                message: 'Doença não encontrada',
+                message: 'Descrição não encontrada',
                 data: []
             });
         }
 
-        dados.doenca = doenca ?? dados.doenca;
         dados.descricao = descricao ?? dados.descricao;
 
         await dados.save();
 
         return res.status(200).send({
             type: 'success',
-            message: 'Doença atualizada com sucesso',  
+            message: 'Descrição atualizada com sucesso',  
             data: dados
         });
     } catch (error) {

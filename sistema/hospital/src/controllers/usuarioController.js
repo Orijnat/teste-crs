@@ -13,7 +13,7 @@ const register = async (req, res) => {
         if (!nome || !email || !password || !nivelAcesso) {
             return res.status(400).send({
                     type: 'error',
-                    message: 'Campos obrigatorios nome, email, senha ou nivel de acesso nao foram preenchidos',
+                    message: 'Campos obrigatorios nome, email, password ou nivel de acesso nao foram preenchidos',
                     data: []
                 });
             }
@@ -34,7 +34,7 @@ const register = async (req, res) => {
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        const retorno = await Usuarios.create({ nome, email, passwordHash, nivelAcesso });
+        const retorno = await Usuarios.create({ nome, email, passwordHash, perfilId: nivelAcesso });
     
     return res.status(201).send({
         type: 'success',

@@ -19,37 +19,27 @@ import Sala from "./SalaModel.js";
 import Triagem from "./TriagemModel.js";
 import Usuarios from "./UsuarioModel.js";
 
-// Configurar associações
-Perfil.hasMany(Usuarios, { foreignKey: 'perfilId', as: 'usuarios' });
-Usuarios.belongsTo(Perfil, { foreignKey: 'perfilId', as: 'perfil' });
-
-Perfil.hasMany(Medico, { foreignKey: 'perfilId', as: 'medicos' });
-Medico.belongsTo(Perfil, { foreignKey: 'perfilId', as: 'perfil' });
-
-Perfil.hasMany(Enfermeiros, { foreignKey: 'perfilId', as: 'enfermeiros' });
-Enfermeiros.belongsTo(Perfil, { foreignKey: 'perfilId', as: 'perfil' });
-
 (async () => {
-    await Perfil.sync();
-    await Ala.sync();
-    await Consultas.sync();
-    await Doenca.sync();
-    await Enfermeiros.sync();
-    await Especializacoes.sync();
-    await Kits.sync();
-    await Laudos.sync();
-    await Medicamento.sync();
-    await MedicamentosLaudo.sync();
-    await MedicosEspecializacoes.sync();
-    await Medico.sync();
-    await Paciente.sync();
-    await pacienteDoenca.sync();
-    await PacienteSala.sync();
-    await ProcedimentoLaudo.sync();
-    await Procedimentos.sync();
-    await Sala.sync();
-    await Triagem.sync();
-    await Usuarios.sync();
+    // await Perfil.sync();
+    // await Ala.sync();
+    // await Consultas.sync();
+    // await Doenca.sync();
+    // await Enfermeiros.sync();
+    // await Especializacoes.sync();
+    // await Kits.sync();
+    // await Laudos.sync();
+    // await Medicamento.sync();
+    // await MedicamentosLaudo.sync();
+    // await MedicosEspecializacoes.sync();
+    //await Medico.sync();
+    // await Paciente.sync();
+    // await pacienteDoenca.sync();
+    // await PacienteSala.sync();
+    // await ProcedimentoLaudo.sync();
+   //await Procedimentos.sync();
+    // await Sala.sync();
+    // await Triagem.sync();
+    //await Usuarios.sync();
 })();
 
-export { Perfil, Usuarios, Medico, Enfermeiros };
+export { Perfil, Medico, Enfermeiros };

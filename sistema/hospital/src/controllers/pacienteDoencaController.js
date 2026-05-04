@@ -28,19 +28,19 @@ const get = async (req, res) => {
 
 const create = async (req,res) => {
     try {
-        const { paciente_id, doenca_id } = req.body;
+        const { idPaciente, idDoenca } = req.body;
 
-        if (!paciente_id || !doenca_id) {
+        if (!idPaciente || !idDoenca) {
             return res.status(400).send({
                 type: 'error',
-                message: 'Campos obrigatórios: paciente_id, doenca_id',
+                message: 'Campos obrigatórios: idPaciente, idDoenca',
                 data: []
             });
         }
 
         const retorno = await PacienteDoenca.create({
-            paciente_id,
-            doenca_id
+            idPaciente,
+            idDoenca
         })
         return res.status(201).send({
             type: 'success',
@@ -104,7 +104,7 @@ const getId = async (req, res) => {
 const update = async (req, res) => {
     try {
         const id = req.params.id;
-        const { paciente_id, doenca_id } = req.body;
+        const { idPaciente, idDoenca } = req.body;
 
         if (isNaN(id)) {
             return res.status(400).send({
@@ -124,8 +124,8 @@ const update = async (req, res) => {
             });
         }
 
-        dados.paciente_id = paciente_id ?? dados.paciente_id;
-        dados.doenca_id = doenca_id ?? dados.doenca_id;
+        dados.idPaciente = idPaciente ?? dados.idPaciente;
+        dados.idDoenca = idDoenca ?? dados.idDoenca;
         
 
         await dados.save();
