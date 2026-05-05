@@ -1,6 +1,8 @@
 import Triagem from '../models/TriagemModel.js'
 import Paciente from "../models/PacienteModel.js";
 import Enfermeiro from "../models/EnfermeirosModel.js";
+import Consultas from '../models/ConsultasModel.js';
+import { Op } from 'sequelize';
 
 const get = async (req, res) => {
     try {
@@ -48,6 +50,46 @@ const create = async (req,res) => {
             data: retorno
         });
 
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            type: 'error',
+            message: 'Erro',
+            data: error.message
+        });
+    }
+}
+
+const getSemConsulta = async (req, res) => {    
+    try {
+        const triagensComConsulta = await Consultas.findAll({
+            attributes: ['idTriagem'],
+            raw: true,
+        });
+
+        const idsTriagemComConsulta = [...new Set(
+            triagensComConsulta
+                .map((consulta) => consulta.idTriagem)
+                .filter((idTriagem) => idTriagem !== null && idTriagem !== undefined)
+        )];
+
+        const where = idsTriagemComConsulta.length > 0
+            ? { id: { [Op.notIn]: idsTriagemComConsulta } }
+            : undefined;
+
+        const dados = await Triagem.findAll({
+            where,
+            include: [
+                { model: Paciente, as: 'paciente' },
+                { model: Enfermeiro, as: 'enfermeiro' }
+            ]
+        });
+
+        return res.status(200).send({
+            type: 'success',
+            message: 'Dados buscados com sucesso',
+            data: dados
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -147,6 +189,7 @@ const update = async (req, res) => {
 export default {
     get,
     create,
+    getSemConsulta,
     getId,
     update,
 };
