@@ -1,6 +1,8 @@
 import Consultas from "../models/ConsultasModel.js";
 import Paciente from "../models/PacienteModel.js";
 import Medico from "../models/MedicosModel.js";
+import Laudos from "../models/LaudosModel.js";
+import { Op } from 'sequelize';
 
 const get = async (req, res) => {
     try {
@@ -25,6 +27,50 @@ const get = async (req, res) => {
         });
     }
 };
+
+const getSemLaudo= async (req, res) => {
+    try {
+        const consultasComLaudo = await Laudos.findAll({
+            attributes: ['idConsulta'],
+            raw: true
+        });
+
+        const idsConsultasComLaudo = [...new Set(
+            consultasComLaudo
+            .map((laudo) => laudo.idConsulta)
+            .filter((idConsulta) => idConsulta !== null && idConsulta !== undefined)
+        )];
+
+        const where= idsConsultasComLaudo.length > 0
+        ? {id : { [Op.notIn ]: idsConsultasComLaudo }} 
+        : undefined;
+
+        const dados = await Consultas.findAll({
+            where, 
+                include: [
+                    { model: Paciente, as: 'paciente' },
+                    { model: Medico, as: 'medico' }
+                ]
+            },
+        );
+
+        return res.status(200).send({
+            type: 'success',
+            message: 'Dados buscados com sucesso',
+            data: dados
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            type: 'error',
+            message: 'Erro',
+            data: error.message
+            
+        });
+    }
+};
+
+
 
 const create = async (req,res) => {
     try {
@@ -155,6 +201,7 @@ const update = async (req, res) => {
 
 export default {
     get,
+    getSemLaudo,
     create,
     getId,
     update

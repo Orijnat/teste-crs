@@ -1,4 +1,4 @@
-import Triagem from '../models/TriagemModel.js'
+import Triagem from '../models/TriagemModel.js';
 import Paciente from "../models/PacienteModel.js";
 import Enfermeiro from "../models/EnfermeirosModel.js";
 import Consultas from '../models/ConsultasModel.js';
@@ -28,7 +28,7 @@ const get = async (req, res) => {
     }
 };
 
-const create = async (req,res) => {
+const create = async (req, res) => {
     try {
         const { idPaciente, idEnfermeiro } = req.body;
 
@@ -43,13 +43,13 @@ const create = async (req,res) => {
         const retorno = await Triagem.create({
             idPaciente,
             idEnfermeiro
-        })
+        });
+
         return res.status(201).send({
             type: 'success',
             message: 'Triagem criada com sucesso',
             data: retorno
         });
-
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -58,13 +58,13 @@ const create = async (req,res) => {
             data: error.message
         });
     }
-}
+};
 
-const getSemConsulta = async (req, res) => {    
+const getSemConsulta = async (req, res) => {
     try {
         const triagensComConsulta = await Consultas.findAll({
             attributes: ['idTriagem'],
-            raw: true,
+            raw: true
         });
 
         const idsTriagemComConsulta = [...new Set(
@@ -98,21 +98,22 @@ const getSemConsulta = async (req, res) => {
             data: error.message
         });
     }
-}
+};
 
 
 const getId = async (req, res) => {
     try {
-        const id= req.params.id;
+        const id = req.params.id;
 
         if (isNaN(id)) {
             return res.status(400).send({
                 type: 'error',
                 message: 'ID inválido',
                 data: []
-            })
+            });
         }
-        const dados= await Triagem.findByPk(id, {
+
+        const dados = await Triagem.findByPk(id, {
             include: [
                 { model: Paciente, as: 'paciente' },
                 { model: Enfermeiro, as: 'enfermeiro' }
@@ -124,7 +125,7 @@ const getId = async (req, res) => {
                 type: 'error',
                 message: 'Triagem não encontrada',
                 data: []
-            })
+            });
         }
 
         return res.status(200).send({
@@ -132,7 +133,6 @@ const getId = async (req, res) => {
             message: 'Triagem encontrada com sucesso',
             data: dados
         });
-
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -141,7 +141,7 @@ const getId = async (req, res) => {
             data: error.message
         });
     }
-}
+};
 
 const update = async (req, res) => {
     try {
@@ -173,7 +173,7 @@ const update = async (req, res) => {
 
         return res.status(200).send({
             type: 'success',
-            message: 'Triagem atualizada com sucesso',  
+            message: 'Triagem atualizada com sucesso',
             data: dados
         });
     } catch (error) {
@@ -184,7 +184,7 @@ const update = async (req, res) => {
             data: error.message
         });
     }
-}
+};
 
 export default {
     get,
