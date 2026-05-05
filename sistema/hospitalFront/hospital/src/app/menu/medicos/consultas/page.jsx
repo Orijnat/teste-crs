@@ -3,199 +3,194 @@
 import { useEffect, useState } from "react";
 import NavBar from "../../../../layouts/NavBar";
 import api from "@/utils/api";
+import ModalFormularioMedico from "../../../../layouts/modalFormularioMedico";
 
 export default function MenuPage() {
-    const [relatoPaciente, setRelatoPaciente] = useState("");
-    const [idTriagem, setIdTriagem] = useState("");
-    const [idMedico, setIdMedico] = useState("");
-    const [idSala, setSala] = useState("");
-    const [data, setData] = useState("");
-    const [triagens, setTriagens] = useState([]);
+  const [relatoPaciente, setRelatoPaciente] = useState("");
+  const [idTriagem, setIdTriagem] = useState("");
+  const [idMedico, setIdMedico] = useState("");
+  const [idSala, setSala] = useState("");
+  const [data, setData] = useState("");
+  const [triagens, setTriagens] = useState([]);
+  const [modalAberto, setModalAberto] = useState(false);
 
-    useEffect(() => {
-        const buscarTriagens = async () => {
-            try {
-                const response = await api.get("/triagem/get-all");
-                setTriagens(response.data?.data ?? []);
-            } catch (error) {
-                console.error("Erro ao buscar triagens:", error);
-            }
-        };
-
-        buscarTriagens();
-    }, []);
-
-    const triagemSelecionada = triagens.find(
-        (triagem) => String(triagem.id) === String(idTriagem)
-    );
-
-    const idPaciente = triagemSelecionada?.paciente?.id ? String(triagemSelecionada.paciente.id) : "";
-
-    const criarConsulta = async (e) => {
-        e.preventDefault();
-
-        try {
-            const dados = {
-                relatoPaciente,
-                idTriagem: Number(idTriagem),
-                idMedico: Number(idMedico),
-                idSala: Number(idSala),
-                data,
-                idPaciente: Number(idPaciente),
-            };
-
-            if (!relatoPaciente || !idTriagem || !idMedico || !idSala || !data || !idPaciente) {
-                alert("Preencha todos os campos para cadastrar a consulta.");
-                return;
-            }
-
-            await api.post("/consulta/create", dados);
-
-            setRelatoPaciente("");
-            setIdTriagem("");
-            setIdMedico("");
-            setSala("");
-            setData("");
-
-            alert("Consulta cadastrada com sucesso!");
-            console.log("Consulta criada:", dados);
-        } catch (error) {
-            console.error("Erro ao criar consulta:", error);
-            alert(error?.response?.data?.message || "Erro ao cadastrar consulta.");
-        }
+  useEffect(() => {
+    const buscarTriagens = async () => {
+      try {
+        const response = await api.get("/triagem/get-sem-consulta");
+        setTriagens(response.data?.data ?? []);
+      } catch (error) {
+        console.error("Erro ao buscar triagens:", error);
+      }
     };
 
-    return (
-        <main className="min-h-screen bg-fundo-das-paginas px-4 py-8 text-slate-900">
-            <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-                <NavBar
-                    ativo={true}
-                    itensMenu={[
-                        { href: "/menu/medicos", label: "Home", ativo: false },
-                        { href: "/menu/medicos/laudos", label: "Laudos", ativo: false },
-                        { href: "/menu/medicos/procedimentos", label: "Procedimentos", ativo: false },
-                        { href: "/menu/medicos/kits", label: "Kits", ativo: false },
-                        { href: "/menu/medicos/medicamentos", label: "Medicamentos", ativo: false },
-                        { href: "/menu/medicos/salas", label: "Salas", ativo: false },
-                    ]}
-                />
+    buscarTriagens();
+  }, []);
 
-                <section className="flex justify-center">
-                    <div className="mt-10 w-full max-w-2xl rounded-[28px] bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur">
-                        <h1 className="mt-2 text-3xl font-semibold tracking-tight">Consulta</h1>
+  const triagemSelecionada = triagens.find(
+    (triagem) => String(triagem.id) === String(idTriagem)
+  );
 
-                        <form className="mt-8 space-y-4" onSubmit={criarConsulta}>
-                            <div>
-                                <label htmlFor="relatoPaciente" className="mb-1 block text-sm font-medium">
-                                    Relato do paciente
-                                </label>
-                                <input
-                                    id="relatoPaciente"
-                                    name="relatoPaciente"
-                                    type="text"
-                                    value={relatoPaciente}
-                                    onChange={(e) => setRelatoPaciente(e.target.value)}
-                                    placeholder="Relato do paciente"
-                                    autoComplete="off"
-                                    className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
-                                />
-                            </div>
+  const idPaciente = triagemSelecionada?.paciente?.id
+    ? String(triagemSelecionada.paciente.id)
+    : "";
 
-                            <div className="grid gap-4 md:grid-cols-2">
-                                <div>
-                                    <label htmlFor="idTriagem" className="mb-1 block text-sm font-medium">
-                                        ID da Triagem
-                                    </label>
-                                    <select
-                                        id="idTriagem"
-                                        name="idTriagem"
-                                        value={idTriagem}
-                                        onChange={(e) => setIdTriagem(e.target.value)}
-                                        className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
-                                    >
-                                        <option value="">Selecione a triagem</option>
-                                        {triagens.map((triagem) => (
-                                            <option key={triagem.id} value={triagem.id}>
-                                                Triagem #{triagem.id} - Paciente {triagem.paciente?.nome ?? triagem.paciente?.id ?? "sem paciente"}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label htmlFor="idPaciente" className="mb-1 block text-sm font-medium">
-                                        ID do paciente
-                                    </label>
-                                    <input
-                                        id="idPaciente"
-                                        name="idPaciente"
-                                        type="text"
-                                        value={idPaciente}
-                                        readOnly
-                                        placeholder="Preenchido automaticamente pela triagem"
-                                        autoComplete="off"
-                                        className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 outline-none transition focus:border-slate-900"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label htmlFor="idMedico" className="mb-1 block text-sm font-medium">
-                                    ID do médico
-                                </label>
-                                <input
-                                    id="idMedico"
-                                    name="idMedico"
-                                    type="text"
-                                    value={idMedico}
-                                    onChange={(e) => setIdMedico(e.target.value)}
-                                    placeholder="Id do médico responsável"
-                                    autoComplete="off"
-                                    className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="sala" className="mb-1 block text-sm font-medium">
-                                    Sala
-                                </label>
-                                <input
-                                    id="sala"
-                                    name="sala"
-                                    type="text"
-                                    value={idSala}
-                                    onChange={(e) => setSala(e.target.value)}
-                                    placeholder="ID da sala onde a consulta está sendo realizada"
-                                    autoComplete="off"
-                                    className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="dataConsulta" className="mb-1 block text-sm font-medium">
-                                    Data da Consulta
-                                </label>
-                                <input
-                                    id="dataConsulta"
-                                    name="dataConsulta"
-                                    type="date"
-                                    value={data}
-                                    onChange={(e) => setData(e.target.value)}
-                                    autoComplete="off"
-                                    className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="w-full rounded-2xl bg-slate-900 px-4 py-3 font-medium text-white transition hover:bg-slate-700"
-                            >
-                                Finalizar Consulta
-                            </button>
-                        </form>
-                    </div>
-                </section>
-            </div>
-        </main>
+  const marcarComoFeito = (id) => {
+    setTriagens(
+      triagens.map((triagem) =>
+        triagem.id === id ? { ...triagem, feito: !triagem.feito } : triagem
+      )
     );
+  };
+
+  const abrirModalConsulta = (triagem) => {
+    setIdTriagem(String(triagem.id));
+    setModalAberto(true);
+  };
+
+  const fecharModalConsulta = () => {
+    setModalAberto(false);
+  };
+
+  const marcarTriagemComoConcluida = (triagemId) => {
+    setTriagens((triagensAtuais) =>
+      triagensAtuais.map((triagem) =>
+        String(triagem.id) === String(triagemId)
+          ? { ...triagem, feito: true }
+          : triagem
+      )
+    );
+  };
+
+  const criarConsulta = async (e) => {
+    e.preventDefault();
+
+    try {
+      const dados = {
+        relatoPaciente,
+        idTriagem: Number(idTriagem),
+        idMedico: Number(idMedico),
+        idSala: Number(idSala),
+        data,
+        idPaciente: Number(idPaciente),
+      };
+
+      if (!relatoPaciente || !idTriagem || !idMedico || !idSala || !data || !idPaciente) {
+        alert("Preencha todos os campos para cadastrar a consulta.");
+        return;
+      }
+
+      await api.post("/consulta/create", dados);
+
+      marcarTriagemComoConcluida(idTriagem);
+      fecharModalConsulta();
+
+      setRelatoPaciente("");
+      setIdTriagem("");
+      setIdMedico("");
+      setSala("");
+      setData("");
+
+      alert("Consulta cadastrada com sucesso!");
+      console.log("Consulta criada:", dados);
+    } catch (error) {
+      console.error("Erro ao criar consulta:", error);
+      alert(error?.response?.data?.message || "Erro ao cadastrar consulta.");
+    }
+  };
+
+  return (
+    <main className="min-h-screen bg-fundo-das-paginas px-4 py-8 text-slate-900">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+        <NavBar
+          ativo={true}
+          itensMenu={[
+            { href: "/menu/medicos", label: "Home"},
+            { href: "/menu/medicos/laudos", label: "Laudos"},
+            { href: "/menu/medicos/procedimentos", label: "Procedimentos"},
+            { href: "/menu/medicos/kits", label: "Kits"},
+            { href: "/menu/medicos/medicamentos", label: "Medicamentos"},
+            { href: "/menu/medicos/salas", label: "Salas"},
+          ]}
+        />
+
+        <section className="flex items-center justify-center rounded-[28px] bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur">
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+            Consultas
+          </h1>
+        </section>
+
+        <div className="space-y-4">
+          {triagens?.map((triagem) => (
+            <div
+              key={triagem.id}
+              className={`rounded-lg border-2 p-4 transition ${
+                triagem.feito ? "border-green-400 bg-green-50" : "border-slate-300 bg-slate-50"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <h2
+                    className={`text-lg font-semibold ${triagem.feito ? "line-through text-slate-500" : ""}`}
+                  >
+                    {triagem.nome}
+                  </h2>
+                  <div className="mt-2 space-y-1 text-sm text-slate-600">
+                    <p><strong>Id da Triagem:</strong> {triagem.id}</p>
+                    <p><strong>Paciente:</strong> {triagem.paciente?.nome}</p>
+                    <p><strong>Id do Enfermeiro:</strong> {triagem.enfermeiro?.id}</p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => marcarComoFeito(triagem.id)}
+                  className={`whitespace-nowrap rounded-lg px-4 py-2 font-medium transition ${
+                    triagem.feito
+                      ? "bg-green-500 text-white hover:bg-green-600"
+                      : "bg-slate-900 text-white hover:bg-slate-700"
+                  }`}
+                >
+                  {triagem.feito ? "✓ Feito" : "Marcar como feito"}
+                </button>
+
+                {!triagem.feito && (
+                  <button
+                    type="button"
+                    onClick={() => abrirModalConsulta(triagem)}
+                    className="whitespace-nowrap rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
+                  >
+                    Realizar consulta
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {triagens?.length === 0 && (
+            <p className="py-8 text-center text-slate-500">Nenhuma triagem disponível</p>
+          )}
+        </div>
+
+          <ModalFormularioMedico
+            triagens={triagens}
+            relatoPaciente={relatoPaciente}
+            setRelatoPaciente={setRelatoPaciente}
+            idTriagem={idTriagem}
+            setIdTriagem={setIdTriagem}
+            idMedico={idMedico}
+            setIdMedico={setIdMedico}
+            idSala={idSala}
+            setSala={setSala}
+            data={data}
+            setData={setData}
+            criarConsulta={criarConsulta}
+            idPaciente={idPaciente}
+            isOpen={modalAberto}
+            onClose={fecharModalConsulta}
+        />
+
+        
+      </div>
+    </main>
+  );
 }

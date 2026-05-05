@@ -1,153 +1,85 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
 
-export default function CadastroPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const router = useRouter();
+export default function EsqueciSenhaPage() {
+    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('');
 
-  const title = "Cadastro de Usuário";
-  const description = "Preencha seus dados para criar uma conta no sistema.";
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setMessage('');
+        setMessageType('');
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setError(null);
+        if (!email.trim()) {
+            setMessage('Informe seu e-mail para continuar.');
+            setMessageType('error');
+            return;
+        }
 
-    if (
-      !name ||
-      !email ||
-      !password ||
-      !confirmPassword
-    ) {
-      setError("Preencha todos os campos");
-      return;
-    }
+        try {
+            setLoading(true);
 
-    if (password !== confirmPassword) {
-      setError("As senhas não coincidem");
-      return;
-    }
+            setMessage('Se o e-mail estiver cadastrado, você receberá as instruções para redefinir a senha.');
+            setMessageType('success');
+            setEmail('');
+        } catch (error) {
+            setMessage(error?.message || 'Não foi possível processar a solicitação.');
+            setMessageType('error');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    setLoading(true);
-    try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password
-        }),
-      });
+    return (
+        <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.75),_transparent_45%),linear-gradient(180deg,_#cbd5e1_0%,_#e2e8f0_100%)] px-4 text-slate-900">
+            <div className="w-full max-w-md rounded-3xl border border-white/70 bg-white/90 p-8 shadow-[0_20px_80px_rgba(15,23,42,0.14)] backdrop-blur">
+                <div className="mb-8">
+                    <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-700">Sistema Hospitalar</p>
+                    <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Esqueci minha senha</h1>
+                    <p className="mt-2 text-sm leading-6 text-slate-500">
+                        Informe seu e-mail e enviaremos as instruções para redefinir sua senha.
+                    </p>
+                </div>
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || "Erro ao registrar");
-      }
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="email" className="mb-1 block text-sm font-medium text-slate-700">
+                            E-mail
+                        </label>
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(event) => setEmail(event.target.value)}
+                            placeholder="voce@hospital.com"
+                            autoComplete="email"
+                            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                        />
+                    </div>
 
-      setName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      router.push("/login");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao registrar");
-    } finally {
-      setLoading(false);
-    }
-  }
-  return (
+                    {message ? (
+                        <p
+                            className={`rounded-xl border px-4 py-3 text-sm ${messageType === 'success'
+                                ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                                : 'border-rose-200 bg-rose-50 text-rose-700'
+                                }`}
+                        >
+                            {message}
+                        </p>
+                    ) : null}
 
-    <main className="flex min-h-screen items-center justify-center bg-fundo-das-paginas px-4 text-slate-900">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-[0_0_40px_rgba(0,0,0,0.08)]">
-        <div>
-          <h1 className="text-2xl font-semibold">{title}</h1>
-          <p className="mt-1 text-sm text-slate-500">{description}</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          <div>
-            <label htmlFor="name" className="mb-1 block text-sm font-medium">
-              Nome completo
-            </label>
-            <input
-              id="name"
-              type="text"
-              placeholder="Seu nome"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium">
-              E-mail
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="voce@hospital.com"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-1 block text-sm font-medium"
-            >
-              Senha
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Sua senha"
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="mb-1 block text-sm font-medium"
-            >
-              Confirmar senha
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              placeholder="Repita a senha"
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-            />
-          </div>
-
-          {error && <p className="text-sm text-red-600">{error}</p>}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-slate-900 px-4 py-2 font-medium text-white transition disabled:opacity-60 hover:bg-slate-700"
-          >
-            {loading ? "Registrando..." : "Cadastrar"}
-          </button>
-        </form>
-      </div>
-    </main>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full rounded-xl bg-slate-950 px-4 py-3 font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+                    >
+                        {loading ? 'Enviando...' : 'Enviar instruções'}
+                    </button>
+                </form>
+            </div>
+        </main>
     );
 }
