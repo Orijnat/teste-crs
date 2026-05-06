@@ -14,6 +14,13 @@ const Laudos = sequelize.define(
         },
         arquivos: {
             type: DataTypes.STRING
+        },
+        descricao:{
+            type: DataTypes.STRING
+        },
+        data:{
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
         }
     },
 {

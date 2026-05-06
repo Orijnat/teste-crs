@@ -10,6 +10,10 @@ const Triagem = sequelize.define(
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
+        },
+        data:{
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
         }
     },
     {

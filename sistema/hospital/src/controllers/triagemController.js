@@ -42,7 +42,8 @@ const create = async (req, res) => {
 
         const retorno = await Triagem.create({
             idPaciente,
-            idEnfermeiro
+            idEnfermeiro,
+            data : new Date()
         });
 
         return res.status(201).send({

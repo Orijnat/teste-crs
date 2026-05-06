@@ -14,9 +14,10 @@ const Consultas= sequelize.define(
             primaryKey: true
         },
         
-        data:{
+        date:{
             type: DataTypes.DATE,
             allowNull:false,
+            defaultValue: DataTypes.NOW,
         },
         relato_paciente:{
             type: DataTypes.STRING(),

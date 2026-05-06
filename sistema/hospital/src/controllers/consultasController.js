@@ -74,23 +74,23 @@ const getSemLaudo= async (req, res) => {
 
 const create = async (req,res) => {
     try {
-        const { data, idPaciente, idMedico, relatoPaciente, relato_paciente, idTriagem, idSala } = req.body;
+        const { idPaciente, idMedico, relatoPaciente, relato_paciente, idTriagem, idSala } = req.body;
         const relatoPacienteValue = relatoPaciente ?? relato_paciente;
 
-        if (!data || !idPaciente || !idMedico || !idTriagem || !idSala) {
+        if (!idPaciente || !idMedico || !idTriagem || !idSala) {
             return res.status(400).send({
                 type: 'error',
-                message: 'Campos obrigatórios: data, idPaciente, idMedico, idTriagem, idSala',
+                message: 'Campos obrigatórios: idPaciente, idMedico, idTriagem, idSala',
                 data: []
             });
         }
 
         const retorno = await Consultas.create({
-            data,
             idPaciente,
             idMedico,
             relato_paciente: relatoPacienteValue,
             idTriagem,
+            date: new Date(),
             idSala
         })
         return res.status(201).send({
@@ -155,7 +155,7 @@ const getId = async (req, res) => {
 const update = async (req, res) => {
     try {
         const id = req.params.id;
-        const { data, idPaciente, idMedico, relatoPaciente, idTriagem, idSala } = req.body;
+        const {idPaciente, idMedico, relatoPaciente, idTriagem, idSala } = req.body;
 
         if (isNaN(id)) {
             return res.status(400).send({
@@ -175,7 +175,7 @@ const update = async (req, res) => {
             });
         }
 
-        dados.data = data ?? dados.data;
+        
         dados.idPaciente = idPaciente ?? dados.idPaciente;
         dados.idMedico = idMedico ?? dados.idMedico;
         dados.relato_paciente = relatoPaciente ?? dados.relato_paciente;

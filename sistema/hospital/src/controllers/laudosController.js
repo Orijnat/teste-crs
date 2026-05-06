@@ -37,12 +37,12 @@ const get = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const { idConsulta, idMedico, idPaciente } = req.body;
+        const { idConsulta, idMedico, idPaciente, descricao } = req.body;
 
-        if (!idConsulta || !idMedico || !idPaciente) {
+        if (!idConsulta || !idMedico || !idPaciente || !descricao) {
             return res.status(400).send({
                 type: 'error',
-                message: 'Campos obrigatórios: idConsulta, idMedico, idPaciente',
+                message: 'Campos obrigatórios: idConsulta, idMedico, idPaciente, descricao',
                 data: []
             });
         }
@@ -50,7 +50,9 @@ const create = async (req, res) => {
         const retorno = await Laudos.create({
             idConsulta,
             idMedico,
-            idPaciente
+            idPaciente,
+            descricao,
+            data: new Date()
         });
 
         if (req.files && req.files.arquivos) {
@@ -126,7 +128,7 @@ const getId = async (req, res) => {
 const update = async (req, res) => {
     try {
         const id = req.params.id;
-        const { idConsulta, idMedico, idPaciente } = req.body;
+        const { idConsulta, idMedico, idPaciente, descricao, data } = req.body;
 
         const dados = await Laudos.findByPk(id);
 
@@ -169,6 +171,7 @@ const update = async (req, res) => {
         dados.idConsulta = idConsulta ?? dados.idConsulta;
         dados.idMedico = idMedico ?? dados.idMedico;
         dados.idPaciente = idPaciente ?? dados.idPaciente;
+        dados.descricao = req.body.descricao ?? dados.descricao;
 
         await dados.save();
 
