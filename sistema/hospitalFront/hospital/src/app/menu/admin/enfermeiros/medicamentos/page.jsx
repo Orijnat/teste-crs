@@ -1,70 +1,79 @@
-'use client';
+"use client";
 
 import NavBar from "../../../../layouts/NavBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "@/utils/api";
+import Medicamentos from "../../../../layouts/medicamentos";
 
-export default function MedicamentosEnfermeirosPage() {
-  const [medicamentos] = useState([
-    { id: 1, nome: "Dipirona", dosagem: "500mg", disponivel: true },
-    { id: 2, nome: "Amoxicilina", dosagem: "500mg", disponivel: true },
-    { id: 3, nome: "Omeprazol", dosagem: "20mg", disponivel: true },
-    { id: 4, nome: "Losartana", dosagem: "50mg", disponivel: true },
-    { id: 5, nome: "Atorvastatina", dosagem: "20mg", disponivel: true },
-    { id: 6, nome: "Metformina", dosagem: "500mg", disponivel: true },
-  ]);
+export default function MedicamentosMedicosPage() {
+  const [medicamentos, setMedicamentos] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [descricaoExpandida, setDescricaoExpandida] = useState({});
+  
 
-  const medicamentosDisponiveis = medicamentos.filter(med => med.disponivel);
+  useEffect(() => {
+    api
+      .get('/medicamento/get-all')
+      .then((response) => {
+        setMedicamentos(response.data?.data || []);
+        setErro("");
+      })
+      .catch((error) => {
+        console.error("Erro na requisição:", error);
+        setErro(error.message || "Falha ao carregar medicamentos.");
+      })
+      .finally(() => {
+        setCarregando(false);
+      });
+  }, []);
+
+  const totalMedicamentos = medicamentos.length;
+  
+  const medicamentosFiltrados = medicamentos.filter(med =>
+    med.medicamento.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const alternarDescricao = (id) => {
+    setDescricaoExpandida((anterior) => ({
+      ...anterior,
+      [id]: !anterior[id],
+    }));
+  };
+
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-fundo-das-paginas px-4 text-slate-900">
+    <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-fundo-das-paginas px-4 text-slate-900">
       <div className="absolute inset-0 bg-white/20 z-0" />
 
-      <div className="z-10 w-full max-w-7xl">
+      <div className="z-10 w-full max-w-7xl pt-10">
         <NavBar
-          ativo= {true}
+          ativo={true}
           itensMenu={[
-            { label: "Home", href: "/menu/enfermeiros", ativo: false },
-            { label: "Triagem", href: "/menu/enfermeiros/triagem", ativo: false },
-            { label: "Procedimentos", href: "/menu/enfermeiros/procedimentos", ativo: false },
-            { label: "Kits", href: "/menu/enfermeiros/kits", ativo: false },
+            { href: "/menu/enfermeiros", label: "Home", ativo: false },
+            { href: "/menu/enfermeiros/consultas", label: "Consultas", ativo: false },
+            { href: "/menu/enfermeiros/laudos", label: "Laudos", ativo: false },
+            { href: "/menu/enfermeiros/procedimentos", label: "Procedimentos", ativo: false },
+            { href: "/menu/enfermeiros/kits", label: "Kits", ativo: false },
+            { href: "/menu/enfermeiros/medicamentos", label: "Medicamentos", ativo: true },
           ]}
         />
 
-        <div className="mt-10">
-          <h1 className="text-3xl font-bold text-center mb-8">Medicamentos Disponíveis</h1>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {medicamentosDisponiveis.map((med) => (
-              <div
-                key={med.id}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
-              >
-                <h3 className="text-xl font-semibold text-slate-800 mb-2">
-                  {med.nome}
-                </h3>
-                <p className="text-slate-600 mb-4">Dosagem: {med.dosagem}</p>
-                <div className="flex items-center">
-                  <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
-                    Disponível
-                  </span>
-                </div>
+        <Medicamentos 
+                  medicamentos={medicamentosFiltrados}
+                  totalMedicamentos={totalMedicamentos}
+                  medicamentosFiltrados={medicamentosFiltrados}
+                  setSearchTerm={setSearchTerm}
+                  searchTerm={searchTerm}
+                  alternarDescricao={alternarDescricao}
+                  descricaoExpandida={descricaoExpandida}
+                  carregando={carregando}
+                  erro={erro}
+                />
+                
               </div>
-            ))}
-          </div>
-
-          {medicamentosDisponiveis.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-lg text-slate-600">
-                Nenhum medicamento disponível no momento
-              </p>
-            </div>
-          )}
-
-          <div className="mt-8 text-center text-sm text-slate-600">
-            <p>Total de medicamentos disponíveis: {medicamentosDisponiveis.length}</p>
-          </div>
-        </div>
-      </div>
     </main>
   );
 }
+    

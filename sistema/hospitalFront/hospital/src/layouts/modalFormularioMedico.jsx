@@ -9,8 +9,6 @@ export default function ModalFormularioMedico({
   setIdMedico,
   idSala,
   setSala,
-  data,
-  setData,
   idPaciente,
   isOpen,
   onClose,
@@ -114,21 +112,6 @@ export default function ModalFormularioMedico({
               value={idSala}
               onChange={(e) => setSala(e.target.value)}
               placeholder="ID da sala onde a consulta está sendo realizada"
-              autoComplete="off"
-              className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="dataConsulta" className="mb-1 block text-sm font-medium">
-              Data da Consulta
-            </label>
-            <input
-              id="dataConsulta"
-              name="dataConsulta"
-              type="date"
-              value={data}
-              onChange={(e) => setData(e.target.value)}
               autoComplete="off"
               className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-900"
             />

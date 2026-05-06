@@ -11,8 +11,6 @@ export default function ModalFormularioLaudo({
   setIdConsulta,
   idMedico,
   setIdMedico,
-  dataLaudo,
-  setDataLaudo,
   idPaciente,
   mensagem,
   isOpen,
@@ -129,19 +127,6 @@ export default function ModalFormularioLaudo({
             />
           </div>
 
-          <div>
-            <label htmlFor="dataLaudo" className="mb-1 block text-sm font-medium">
-              Data do laudo
-            </label>
-            <input
-              id="dataLaudo"
-              type="date"
-              value={dataLaudo}
-              onChange={(event) => setDataLaudo(event.target.value)}
-              autoComplete="off"
-              className={fieldClass}
-            />
-          </div>
 
           {mensagem ? (
             <p className="rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700">{mensagem}</p>

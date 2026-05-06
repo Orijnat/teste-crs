@@ -2,6 +2,7 @@
 import NavBar from "../../../../layouts/NavBar";
 import { useState } from "react";
 import api from "@/utils/api";
+import TriagemForm from "../../../../layouts/triagemFrom";
 
 export default function TriagemPage() {
 
@@ -119,106 +120,39 @@ export default function TriagemPage() {
                 ]}
             />
             
+        
+
             <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-[0_0_40px_rgba(0,0,0,0.08)]">
                 <h1 className="text-2xl font-semibold">Triagem</h1>
+                <div className= "mt-4">
+            <button
+                type="button"
+                onClick={() => (window.location.href = "/menu/enfermeiros/triagem/vertriagens")}
+                className="ml-4 whitespace-nowrap rounded-lg bg-green-600 px-4 py-2 font-medium text-white transition hover:bg-green-700"
+            >
+                Ver triagens Realizadas
+            </button>
+        </div>
                 
-                <form className="mt-6 space-y-4" onSubmit={finalizarTriagem}>
-                    <div>
-                        <label htmlFor="nome" className="mb-1 block text-sm font-medium"> </label>
-                        <input
-                            id="nome"
-                            type="text"
-                            value={nome}
-                            onChange={(e) => setNome(e.target.value)}
-                            placeholder="Nome do paciente"
-                            autoComplete="name"
-                            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-                        />
-
-                        <label htmlFor="idade" className="mb-1 block text-sm font-medium mt-4"> </label>
-                        <input
-                            id="idade"
-                            type="number"
-                            value={idade}
-                            onChange={(e) => setIdade(e.target.value)}
-                            placeholder="Idade do paciente"
-                            autoComplete="off"
-                            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-                        />
-
-                        <label htmlFor= "altura" className= "mb-1 block text-sm font-medium mt-4"></label>
-                        <input
-                            id="altura"
-                            type="number"
-                            step="0.01" // Permite decimais como 1.75 para dar match com o 'double precision' do DB
-                            value={altura}
-                            onChange={(e) => setAltura(e.target.value)}
-                            placeholder="Altura (ex: 1.75)"
-                            autoComplete="off"
-                            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-                        />
-
-                        <label htmlFor= "peso" className= "mb-1 block text-sm font-medium mt-4"></label>
-                        <input
-                            id="peso"
-                            type="number"
-                            step="0.01" // Permite decimais para dar match com o 'double precision' do DB
-                            value={peso}
-                            onChange={(e) => setPeso(e.target.value)}
-                            placeholder="Peso em Kg"
-                            autoComplete="off"
-                            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-                        />
-
-                        <label htmlFor="sintomas" className="mb-1 block text-sm font-medium mt-4"> </label>
-                        <input
-                            id="sintomas"
-                            type="text"
-                            value={sintomas}
-                            onChange={(e) => setSintomas(e.target.value)}
-                            placeholder="Sintomas apresentados"
-                            autoComplete="off"
-                            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-                        />
-                        <label htmlFor="email" className="mb-1 block text-sm font-medium mt-4"> </label>
-                        <input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Email do paciente"
-                            autoComplete="email"
-                            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-                        />
-                        <label htmlFor="password" className="mb-1 block text-sm font-medium mt-4"> </label>
-                        <input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Senha do paciente"
-                            autoComplete="new-password"
-                            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-                        />
-
-                        <label htmlFor="idEnfermeiro" className="mb-1 block text-sm font-medium mt-4"> </label>
-                        <input
-                            id="idEnfermeiro"
-                            type="number"
-                            value={idEnfermeiro}
-                            onChange={(e) => setIdEnfermeiro(e.target.value)}
-                            placeholder="ID do enfermeiro"
-                            autoComplete="off"
-                            className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-slate-900"
-                        />
-                        <button
-                            type="submit"
-                            className="w-full rounded-lg bg-slate-900 px-4 py-2 font-medium text-white transition hover:bg-slate-700 mt-6"
-                        >
-                            Finalizar Triagem
-                        </button>
-                    </div>
-            </form>
+                <TriagemForm
+                    nome={nome}
+                    setNome={setNome}
+                    idade={idade}
+                    setIdade={setIdade}
+                    altura={altura}
+                    setAltura={setAltura}
+                    peso={peso}
+                    setPeso={setPeso}
+                    sintomas={sintomas}
+                    setSintomas={setSintomas}
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
+                    idEnfermeiro={idEnfermeiro}
+                    setIdEnfermeiro={setIdEnfermeiro}
+                    finalizarTriagem={finalizarTriagem}
+                />
             </div>
             
         </main>
