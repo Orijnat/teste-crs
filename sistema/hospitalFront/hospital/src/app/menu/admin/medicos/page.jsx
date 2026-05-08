@@ -1,6 +1,6 @@
 import CardOperacao from "@/layouts/CardOperacao";
-import Footer from "../../../layouts/Footer";
-import NavBar from "../../../layouts/NavBar";
+import Footer from "@/layouts/Footer";
+import NavBar from "@/layouts/NavBar";
 
 export default function MenuPage() {
   const operacoes = [

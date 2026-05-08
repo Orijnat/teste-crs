@@ -22,7 +22,8 @@ export default function TriagemPage() {
             altura: Number(altura),
             peso: Number(peso),
             email,
-            passwordHash: password, // Bate com a coluna "passwordHash" da tabela "Paciente"
+            passwordHash: password, 
+            perfilId: 4
         });
 
         const pacienteId = respostaPaciente.data?.data?.id ?? respostaPaciente.data?.id;
@@ -66,7 +67,7 @@ export default function TriagemPage() {
             idPaciente: pacienteId,
             idDoenca: doencaId,
             idEnfermeiro: Number(idEnfermeiro),
-            data: new Date().toISOString(),
+            data: new Date().toISOString()
         });
     };
 
@@ -83,7 +84,6 @@ export default function TriagemPage() {
     const finalizarTriagem = async (event) => {
         event.preventDefault();
 
-        // Validação básica para evitar requisições nulas no banco
         if (!nome || !email || !sintomas || !idade || !altura || !peso) {
             alert("Por favor, preencha todos os campos obrigatórios da triagem.");
             return;

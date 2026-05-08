@@ -1,7 +1,6 @@
-import NavBar from "../../../layouts/NavBar";
-import CardOperacao from "../../../layouts/CardOperacao";
-import Footer from "../../../layouts/Footer";
-import Link from "next/link";
+import NavBar from "@/layouts/NavBar";
+import CardOperacao from "@/layouts/CardOperacao";
+import Footer from "@/layouts/Footer";
 
 export default function MenuPage() {
 

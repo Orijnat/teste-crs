@@ -25,10 +25,12 @@ export default function LoginPage() {
 
         try {
             setLoading(true);
-            const response = await api.post('/usuario/login', {
+            const response = await api.post('/login', {
                 email,
                 password,
             });
+
+            console.log('Resposta da API:', response.data);
 
             const token = response.data?.data;
 
@@ -37,13 +39,14 @@ export default function LoginPage() {
             }
 
             localStorage.setItem('hospital-token', token);
-            setMessage('Login realizado com sucesso.');
-            setMessageType('success');
-            router.push('/menu/pacientes');
+            router.push('/menu/admin');
+
         } catch (error) {
+
             const apiMessage = error?.response?.data?.message;
             setMessage(apiMessage || error.message || 'Não foi possível acessar a API.');
             setMessageType('error');
+            
         } finally {
             setLoading(false);
         }
@@ -55,8 +58,7 @@ export default function LoginPage() {
                 <div className="mb-8">
                     <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-700">Sistema Hospitalar</p>
                     <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Entrar</h1>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">Acesse o sistema com seu e-mail e senha para falar com a API do backend.</p>
-                </div>
+                    </div>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>

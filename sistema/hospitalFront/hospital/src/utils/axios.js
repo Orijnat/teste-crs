@@ -2,7 +2,7 @@ import api from "./api";
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('crs-auth-token');
+    const token = localStorage.getItem('hospital-token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

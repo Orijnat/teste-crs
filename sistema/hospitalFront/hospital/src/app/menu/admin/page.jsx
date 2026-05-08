@@ -1,35 +1,34 @@
-import NavBar from "../../../layouts/NavBar";
-import CardOperacao from "../../../layouts/CardOperacao";
+import CardOperacao from "@/layouts/CardOperacao";
 import Footer from "../../../layouts/Footer";
-
+import NavBar from "../../../layouts/NavBar";
 
 export default function MenuPage() {
-
   const operacoes = [
     {
-      title: "Triagem",
-      desc: "Classificação de risco e sinais vitais",
+      title: "Painel Medico",
+      desc: "Ir para o Painel Medico",
       color: "border-blue-500",
-      href: "/menu/enfermeiros/triagem",
+      href: "/menu/admin/medicos",
     },
     {
-      title: "Procedimentos",
-      desc: "Administração de cuidados e exames",
+      title: "Painel de Enfermeiros",
+      desc: "Ir para o Painel de Enfermagem",
       color: "border-emerald-500",
-      href: "/menu/enfermeiros/procedimentos",
+      href: "/menu/admin/enfermeiros",
     },
     {
-      title: "Kits",
-      desc: "Gestão de insumos e materiais",
+      title: "Painel de Pacientes",
+      desc: "Ir para o Painel de Pacientes",
       color: "border-amber-500",
-      href: "/menu/enfermeiros/kits",
+      href: "/menu/admin/pacientes",
     },
     {
-      title: "Medicamentos",
-      desc: "Controle de estoque e dispensação",
+      title: "Relatorios",
+      desc: "Gerar e visualizar relatórios de atividades",
       color: "border-rose-500",
-      href: "/menu/enfermeiros/medicamentos",
-    },
+      href: "/menu/admin/relatorios",
+
+    }
   ];
 
   return (
@@ -37,20 +36,25 @@ export default function MenuPage() {
       <main className="relative flex flex-col flex-1 items-center justify-center overflow-hidden px-4 py-8">
         {/* Background overlay */}
         <div className="absolute inset-0 bg-white/20 z-0" />
+        
         <NavBar ativo={false} />
+
+
 
         {/* Content container */}
         <div className="z-10 w-full max-w-7xl flex flex-col flex-1 justify-center">
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-2 mt-10">Painel de Enfermagem</h1>
-            <p className="text-slate-600">Selecione uma operação para iniciar o atendimento</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-2 ">Painel Admin</h1>
+            <p className="text-slate-600">Selecione qual painel deseja acessar</p>
           </div>
 
-          <div className="flex-1">
+          <div className="w-full">
             <CardOperacao operacoes={operacoes} />
           </div>
         </div>
       </main>
+
+      
       <Footer />
     </div>
   );
