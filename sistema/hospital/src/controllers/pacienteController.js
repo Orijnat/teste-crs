@@ -1,4 +1,5 @@
 import Paciente from '../models/PacienteModel.js';
+import bcrypt from 'bcrypt';
 import Consultas from '../models/ConsultasModel.js';
 import PacienteDoenca from '../models/PacienteDoencaModel.js';
 import PacienteSala from '../models/PacientesSalasModel.js';
@@ -31,6 +32,7 @@ const get = async (req, res) => {
 const create= async (req, res) => {
     try {
         const { nome, idade, altura, peso, email, passwordHash } = req.body;
+        const senhaCriptografada = await bcrypt.hash(passwordHash, 10);
 
 
         const retorno = await Paciente.create({
@@ -39,7 +41,8 @@ const create= async (req, res) => {
             altura,
             peso,
             email,
-            passwordHash
+            passwordHash: senhaCriptografada,
+            perfilId:4
         });
 
         return res.status(201).send({

@@ -68,7 +68,7 @@ const create = async (req,res) => {
         });
         }
 
-        const saltRounds = 10;
+        const saltRounds = 5;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
 

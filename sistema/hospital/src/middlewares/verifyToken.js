@@ -17,7 +17,7 @@ const verifyToken = async(req, res, next) => {
         }
 
         const usuario= jwt.verify(token, process.env.SECRET_KEY);
-        const usuarioExiste = await Usuario.findOne({ where: {id: usuario.idUsuario }});
+        const usuarioExiste = await Usuario.findOne({ where: {id: usuario.idUsuario } });
 
         if(!usuarioExiste){
             return res.status(403).send({

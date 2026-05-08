@@ -6,4 +6,5 @@ export default (app) => {
   app.get('/triagem/get-sem-consulta', triagemController.getSemConsulta);
   app.post('/triagem/create', triagemController.create);
   app.put('/triagem/update/:id', triagemController.update);
+  app.get('/triagem/get-por-data', triagemController.getPorData);
 };

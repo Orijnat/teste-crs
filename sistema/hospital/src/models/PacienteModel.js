@@ -1,5 +1,6 @@
 import { sequelize } from "../config/index.js";
 import { DataTypes } from "sequelize";
+import Perfil from "./PerfilModel.js";
 
 const Paciente = sequelize.define(
     'Paciente', 
@@ -34,6 +35,15 @@ const Paciente = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false
         },
+
+        perfilId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'perfil',
+                key: 'id'
+            }
+        },
         
         passwordHash:{
                 type: DataTypes.STRING,
@@ -45,6 +55,11 @@ const Paciente = sequelize.define(
         timestamps: false 
     }
 );
+
+Paciente.belongsTo(Perfil, {
+    as: 'perfil',
+    foreignKey: 'perfilId'
+});
 
     export default Paciente;
 

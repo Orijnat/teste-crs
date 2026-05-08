@@ -43,7 +43,7 @@ const create = async (req, res) => {
         const retorno = await Triagem.create({
             idPaciente,
             idEnfermeiro,
-            data : new Date()
+            data : new Date(),
         });
 
         return res.status(201).send({
@@ -187,10 +187,51 @@ const update = async (req, res) => {
     }
 };
 
+const getPorData = async (req, res) => {
+    try {
+        const { dataI, dataF } = req.query;
+
+        if (!dataI || !dataF) {
+            return res.status(400).send({
+                type: 'error',
+                message: 'Campos obrigatórios: dataI e dataF',
+                data: []
+            });
+        }
+
+        const dados = await Triagem.findAll({
+            where: {
+                data: {
+                    [Op.between]: [dataI, dataF]
+                }
+            },
+            include: [
+                { model: Paciente, as: 'paciente' },
+                { model: Enfermeiro, as: 'enfermeiro' }
+            ]
+        });
+
+
+        return res.status(200).send({
+            type: 'success',
+            message: 'Dados buscados com sucesso',
+            data: dados
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            type: 'error',
+            message: 'Erro',
+            data: error.message
+        });
+    }
+};
+
 export default {
     get,
     create,
     getSemConsulta,
     getId,
     update,
+    getPorData
 };

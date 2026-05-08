@@ -1,86 +1,73 @@
 import Usuarios from "../models/UsuarioModel.js"
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import Medicos from "../models/MedicosModel.js";
+import Enfermeiros from "../models/EnfermeirosModel.js";
+import Paciente from "../models/PacienteModel.js";
 
 
-
-const register = async (req, res) => {
-    try {
-        
-
-        const { nome, email, password, nivelAcesso } = req.body;
-
-        if (!nome || !email || !password || !nivelAcesso) {
-            return res.status(400).send({
-                    type: 'error',
-                    message: 'Campos obrigatorios nome, email, password ou nivel de acesso nao foram preenchidos',
-                    data: []
-                });
-            }
-
-        const UsuarioExistente = await Usuarios.findOne({
-            where: {
-                email
-            }
-        });
-
-        if (UsuarioExistente) {
-            return res.status(400).send({
-                type: 'error',
-                message: 'ja existe!'
-        });
-        }
-
-        const saltRounds = 10;
-        const passwordHash = await bcrypt.hash(password, saltRounds);
-
-        const retorno = await Usuarios.create({ nome, email, passwordHash, perfilId: nivelAcesso });
-    
-    return res.status(201).send({
-        type: 'success',
-        message: 'Usuario criado com sucesso',
-        data: retorno
-    });
-
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send({
-            type: 'error',
-            message: 'Erro ao criar Usuarios',
-            data: error.message
-        });
-        
-    }
-}
 
 const login = async(req, res) => { 
     try {
-        
         const {email, password} = req.body;
 
         if(!email || !password){
             throw new Error("algo esta faltando")
         }
 
-        const UsuariosExistente = await Usuarios.findOne({
+        let UsuariosExistente = await Usuarios.findOne({
             where: {
                 email
             }
         });
 
-        if (!UsuariosExistente || !(await bcrypt.compare(req.body.password, UsuariosExistente.passwordHash))) {
+        if(!UsuariosExistente){
+            UsuariosExistente = await Medicos.findOne({
+            where: {
+                email
+            }
+          });
+        }
+
+        if(!UsuariosExistente){
+                        UsuariosExistente = await Enfermeiros.findOne({
+                        where: {
+                                email
+                        }
+                    });
+                }
+
+                if(!UsuariosExistente){
+            UsuariosExistente = await Paciente.findOne({
+            where: {
+                email
+            }
+          });
+        }
+
+                if (!UsuariosExistente || !(await bcrypt.compare(password, UsuariosExistente.passwordHash))) {
             return res.status(400).send({
                 type: 'error',
                 message: 'email ou senha incorretos'
             })
         }
 
+        const usuarioTipo = UsuariosExistente instanceof Paciente
+            ? 'paciente'
+            : UsuariosExistente instanceof Medicos
+                ? 'medico'
+                : UsuariosExistente instanceof Enfermeiros
+                    ? 'enfermeiro'
+                    : 'usuario';
+
+
         const token= jwt.sign(
             {
                 idUsuario: UsuariosExistente.id,
                 nomeUsuarios: UsuariosExistente.nome,
                 emailUsuarios: UsuariosExistente.email,
-                perfilId: UsuariosExistente.perfilId
+                perfilId: UsuariosExistente.perfilId,
+                idperfil: UsuariosExistente.perfilId
             },
 
             process.env.SECRET_KEY,
@@ -129,7 +116,7 @@ const getUserByToken= async(req,res) =>{
 }
 
 export default {
-    register,
     login,
     getUserByToken
+    
 };

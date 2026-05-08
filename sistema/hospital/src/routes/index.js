@@ -18,7 +18,7 @@ import pacienteSalaRoutes from "./pacienteSalaRoutes.js";
 import procedimentosRoutes from "./procedimentosRoutes.js";
 import perfilRoutes from "./perfilRoutes.js";
 import usuarioRoutes from "./usuarioRoutes.js";
-
+import loginRoutes from "./loginRoutes.js";
 
 function Routes(app){
     pacienteRoutes(app),
@@ -41,6 +41,7 @@ function Routes(app){
     procedimentosRoutes(app),
     perfilRoutes(app)
     usuarioRoutes(app)
+    loginRoutes(app)
 }
 
 export default Routes;
